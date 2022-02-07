@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from io import BufferedIOBase
 from typing import List, Generic, Optional, TypeVar, get_args
 
 RowType = TypeVar('RowType')
@@ -122,6 +123,16 @@ class ListField(Generic[FieldType]):
 
     def clear(self):
         self._value.clear()
+
+
+class ImageField:
+    _property_id: str
+
+    def loadImage(self) -> BufferedIOBase:
+        pass
+
+    def saveImage(self, image: BufferedIOBase):
+        pass
 
 
 StringField = ScalarField[str]

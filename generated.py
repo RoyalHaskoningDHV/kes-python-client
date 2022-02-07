@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Flag, auto
-from meta import EnumField, ListOfStringsField, NumberField, StringField, Table
+from meta import EnumField, ImageField, ListOfStringsField, NumberField, StringField, Table
 
 
 class Expertise(Flag):
@@ -15,6 +15,7 @@ class ProgrammerRow:
     aliases: ListOfStringsField		        # Repeating text propertny
     age: NumberField                        # Number field
     expertise: EnumField[Expertise]			# single or multiple choice
+    mug_shot: ImageField
 
 
 ProgrammerTable = Table[ProgrammerRow]
