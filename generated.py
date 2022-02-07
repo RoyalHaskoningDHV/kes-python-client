@@ -1,15 +1,18 @@
 from enum import Flag, auto
-from meta import ListOfStringFields, NumberField, StringField
+from meta import EnumField, ListOfStringsField, NumberField, StringField, Table
 
 
 class Expertise(Flag):
-    BACKEND = auto()		# Is auto smart here?
+    BACKEND = auto()
     FRONTEND = auto()
     DEVOPS = auto()
 
 
 class ProgrammerRow:
-    name: StringField				# Text property
-    aliases: ListOfStringFields		# Repeating text propertny
-    age: NumberField
-    expertise: Expertise			# single or multiple choice
+    name: StringField				        # Text property
+    aliases: ListOfStringsField		        # Repeating text propertny
+    age: NumberField                        # Number field
+    expertise: EnumField[Expertise]			# single or multiple choice
+
+
+ProgammerTable = Table[ProgrammerRow]
