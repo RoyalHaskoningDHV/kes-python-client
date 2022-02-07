@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Flag, auto
 from meta import EnumField, ListOfStringsField, NumberField, StringField, Table
 
@@ -8,6 +9,7 @@ class Expertise(Flag):
     DEVOPS = auto()
 
 
+@dataclass
 class ProgrammerRow:
     name: StringField				        # Text property
     aliases: ListOfStringsField		        # Repeating text propertny
@@ -15,4 +17,5 @@ class ProgrammerRow:
     expertise: EnumField[Expertise]			# single or multiple choice
 
 
-ProgammerTable = Table[ProgrammerRow]
+ProgrammerTable = Table[ProgrammerRow]
+progammerTable = ProgrammerTable("programmer_asset_id")

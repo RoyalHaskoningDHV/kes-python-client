@@ -1,35 +1,51 @@
+from dataclasses import dataclass
 from typing import List, Generic, Optional, TypeVar, get_args
 
 RowType = TypeVar('RowType')
 
 
+@dataclass
+class RowElement(Generic[RowType]):
+    row: RowType
+    assetId: Optional[str]
+
+
 class Table(Generic[RowType]):
     _assetTypeId: str
-    _rows: List[RowType]
+    _rows: List[RowElement[RowType]]
 
     def __init__(self, assetTypeId: str):
         self._assetTypeId = assetTypeId
         self._rows = []
 
+    def get_row_type(self):
+        # __orig_class__ is an implementation detail but the benefits are too enticing
+        return get_args(self.__orig_class__)[0]  # type: ignore
+
     def __len__(self):
         return len(self._rows)
 
     def __getitem__(self, key):
-        return self._rows[key]
+        return self._rows[key].row
 
     def __set__item__(self, key, value: RowType):
-        if not isinstance(value, self.get_field_type()):
+        if not isinstance(value, self.get_row_type()):
             raise TypeError
-        self._rows[key] = value
+        self._rows[key].row = value
 
     def __delitem__(self, key):
         del self._rows[key]
 
     def __iter__(self):
-        return iter(self._rows)
+        return (rowElem.row for rowElem in self._rows)
 
     def __reverse__(self):
-        return reversed(self._rows)
+        return reversed(iter(self))
+
+    def appendRow(self, value: RowType):
+        if not isinstance(value, self.get_row_type()):
+            raise TypeError
+        self._rows.append(RowElement[RowType](value, None))
 
 
 FieldType = TypeVar('FieldType')
