@@ -9,7 +9,7 @@ RowType = TypeVar('RowType')
 @dataclass
 class RowElement(Generic[RowType]):
     row: RowType
-    assetId: UUID
+    asset_id: UUID
 
 
 ParticipantType = TypeVar('ParticipantType')
@@ -58,10 +58,13 @@ class Table(Generic[RowType]):
     def appendRow(self, value: RowType):
         if not isinstance(value, self.get_row_type()):
             raise TypeError
-        self._rows.append(RowElement[RowType](value, uuid4()))
 
-    def getRowReference(self, rowIndex: int):
-        asset_id = self._rows[rowIndex].assetId
+        asset_id = uuid4()
+        self._rows.append(RowElement[RowType](value, asset_id))
+        return RowReference[RowType](self._asset_type_id, asset_id)
+
+    def getReferenceByRowIndex(self, rowIndex: int):
+        asset_id = self._rows[rowIndex].asset_id
         return RowReference[RowType](self._asset_type_id, asset_id)
 
 
@@ -69,6 +72,11 @@ FieldType = TypeVar('FieldType')
 
 
 class ImageField:
+    _property_id: UUID
+
+    def __init__(self, property_id: UUID):
+        self._property_id = property_id
+
     def loadImage(self) -> Optional[BufferedIOBase]:
         pass
 
