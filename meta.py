@@ -12,13 +12,22 @@ class RowElement(Generic[RowType]):
     assetId: UUID
 
 
+ParticipantType = TypeVar('ParticipantType')
+
+
+@dataclass
+class RowReference(Generic[ParticipantType]):
+    asset_type_id: UUID
+    asset_id: UUID
+
+
 class Table(Generic[RowType]):
-    _assetTypeId: UUID
+    _asset_type_id: UUID
     _rows: List[RowElement[RowType]]
     _property_map: Mapping[str, UUID]
 
-    def __init__(self, assetTypeId: UUID, property_map: Mapping[str, UUID]):
-        self._assetTypeId = assetTypeId
+    def __init__(self, asset_type_id: UUID, property_map: Mapping[str, UUID]):
+        self._asset_type_id = asset_type_id
         self._rows = []
         self._property_map = property_map
 
@@ -50,6 +59,10 @@ class Table(Generic[RowType]):
         if not isinstance(value, self.get_row_type()):
             raise TypeError
         self._rows.append(RowElement[RowType](value, uuid4()))
+
+    def getRowReference(self, rowIndex: int):
+        asset_id = self._rows[rowIndex].assetId
+        return RowReference[RowType](self._asset_type_id, asset_id)
 
 
 FieldType = TypeVar('FieldType')
