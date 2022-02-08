@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from enum import Flag, auto
-from meta import EnumField, ImageField, ListOfStringsField, NumberField, StringField, Table
+from typing import Container, Optional
+from uuid import UUID
+from meta import ImageField, Table
 
 
 class Expertise(Flag):
@@ -11,12 +13,21 @@ class Expertise(Flag):
 
 @dataclass
 class ProgrammerRow:
-    name: StringField				        # Text property
-    aliases: ListOfStringsField		        # Repeating text propertny
-    age: NumberField                        # Number field
-    expertise: EnumField[Expertise]			# single or multiple choice
-    mug_shot: ImageField
+    name: Optional[str]				        # Text property
+    aliases: Container[str]		            # Repeating text property
+    age: Optional[float]                    # Number field
+    expertise: Optional[Expertise]			# single or multiple choice
+    mug_shot: ImageField                    # Image property, snake-cased.
 
 
-ProgrammerTable = Table[ProgrammerRow]
-progammerTable = ProgrammerTable("programmer_asset_id")
+row_property_map = {
+    "name": UUID("name-property-id"),
+    "aliases": UUID("aliases_property-id"),
+    "age": UUID("age-property-id"),
+    "expertise": UUID("expertise-property-id"),
+    "mug_shot": UUID("mug-shot-property-id")
+}
+
+
+progammerTable = Table[ProgrammerRow](
+    UUID("programmer_asset_type_id"), row_property_map)
