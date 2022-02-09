@@ -30,7 +30,7 @@ sweat_shop_table = Table[SweatShopRow](
 class ProgrammerRow:
     # Compound Field: property id injected into constructor
     _mug_shot: ImageField = field(default_factory=lambda: ImageField(
-        UUID("c6e25e1a-d182-404c-bd89-529808f51ee8")))
+        UUID("c6e25e1a-d182-404c-bd89-529808f51ee8")), init=False)
 
     @property
     def mug_shot(self):
@@ -45,6 +45,7 @@ class ProgrammerRow:
     sweat_shop: Optional[RowReference[SweatShopRow]] = None
 
 
+# Quite noisy, move to separate file?
 programmer_row_property_map = {
     "name": UUID("31197f90-7392-4d53-8365-8e626508ecd9"),
     "aliases": UUID("3d1b7deb-8d44-4c4f-b303-08e39c14b0d5"),
