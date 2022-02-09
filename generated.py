@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from enum import Flag, auto
 from typing import Container, Optional
 from uuid import UUID
-from meta import ImageField, RowReference, Table
+from table import ImageField, RowReference, Table
 
 
 class Expertise(Flag):
@@ -56,6 +56,6 @@ programmer_row_property_map = {
 }
 
 
-progammer_table = Table[ProgrammerRow](
+programmer_table = Table[ProgrammerRow](
     UUID("cf69ae6a-41ef-43cc-9b43-700d8269ccf8"), programmer_row_property_map
 )
