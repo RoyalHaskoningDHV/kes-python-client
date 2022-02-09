@@ -32,6 +32,10 @@ class ProgrammerRow:
     _mug_shot: ImageField = field(default_factory=lambda: ImageField(
         UUID("c6e25e1a-d182-404c-bd89-529808f51ee8")))
 
+    @property
+    def mug_shot(self):
+        return self._mug_shot
+
     name: Optional[str] = None
     # Repeating text property
     aliases: Container[str] = field(default_factory=list)
@@ -39,10 +43,6 @@ class ProgrammerRow:
     expertise: Optional[Expertise] = None
     # reference field
     sweat_shop: Optional[RowReference[SweatShopRow]] = None
-
-    @property
-    def mug_shot(self):
-        return self._mug_shot
 
 
 programmer_row_property_map = {
