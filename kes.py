@@ -6,7 +6,7 @@ Classes:
 
 from dataclasses import dataclass
 from io import BufferedIOBase
-from typing import List, Generic, Mapping, Optional, TypeVar, get_args
+from typing import Generator, List, Generic, Mapping, Optional, TypeVar, get_args
 from uuid import UUID, uuid4
 
 RowType = TypeVar('RowType')
@@ -73,11 +73,11 @@ class Table(Generic[RowType]):
     def __delitem__(self, key: int):
         del self._rows[key]
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[RowType, None, None]:
         return (rowElem.row for rowElem in self._rows)
 
-    def __reverse__(self):
-        return(self._rows[i].row for i in range(len(self), -1, -1))
+    def __reversed__(self) -> Generator[RowType, None, None]:
+        return (rowElem.row for rowElem in reversed(self._rows))
 
     def appendRow(self, value: RowType):
         """ Adds the row to the end of the table. Returns a row reference. """

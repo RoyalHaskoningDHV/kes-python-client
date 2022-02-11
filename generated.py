@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from enum import Flag, auto
 from typing import Container, Optional
 from uuid import UUID
-from table import ImageField, RowReference, Table
+from kes import ImageField, RowReference, Table
 
 
 class Expertise(Flag):
