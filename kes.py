@@ -5,9 +5,16 @@ Classes:
 """
 
 from dataclasses import dataclass
+from functools import reduce
 from io import BufferedIOBase
+import logging
 from typing import Generator, List, Generic, Mapping, Optional, TypeVar, get_args
 from uuid import UUID, uuid4
+
+import grpc
+from table_pb2 import ReadTableRequest
+
+from table_pb2_grpc import TableStub
 
 RowType = TypeVar('RowType')
 
@@ -38,9 +45,13 @@ class Table(Generic[RowType]):
         RowType: The type of rows hold by this class.
     """
 
+    __channel: grpc.Channel = grpc.insecure_channel('localhost:50051')
+    __stub = TableStub(__channel)
+
     _asset_type_id: UUID
     _rows: List[RowElement[RowType]]
     _property_map: Mapping[str, UUID]
+    _rev_property_map: Mapping[UUID, str]
 
     def __init__(self, asset_type_id: UUID, property_map: Mapping[str, UUID]):
         """
@@ -54,6 +65,7 @@ class Table(Generic[RowType]):
         self._asset_type_id = asset_type_id
         self._rows = []
         self._property_map = property_map
+        self._rev_property_map = {v: k for k, v in property_map.items()}
 
     def __get_row_type(self):
         # __orig_class__ is an implementation detail but the benefits are too enticing
@@ -92,6 +104,40 @@ class Table(Generic[RowType]):
         """ Get a reference to the specified row """
         asset_id = self._rows[rowIndex].asset_id
         return RowReference[RowType](self._asset_type_id, asset_id)
+
+    def load(self):
+        reply = self.__stub.readTable(ReadTableRequest(
+            inspectionId="b2f3b819-c172-45bb-add1-1f004bb6b561", assetTypeId=str(self._asset_type_id)
+        ))
+        for row in reply.rows:
+            localRow = self.__get_row_type()()
+
+            for field in row.fields:
+                attributeName = self._rev_property_map.get(
+                    UUID(field.propertyId))
+                if (attributeName is None):
+                    logging.warning(
+                        'Field with property id %s not found', field.propertyId)
+                    continue
+                match field.WhichOneof("value"):
+                    case "numbers" if field.multi:
+                        setattr(localRow, attributeName,
+                                field.numbers.elements)
+                    case "numbers":
+                        value = next(iter(field.numbers.elements), None)
+                        setattr(localRow, attributeName, value)
+                    case "strings" if field.multi:
+                        setattr(localRow, attributeName,
+                                field.strings.elements)
+                    case "strings":
+                        value = next(iter(field.strings.elements), None)
+                        setattr(localRow, attributeName, value)
+                    case "members":
+                        enumType = type(getattr(localRow, attributeName))
+                        flagValue = reduce(lambda r, m: r | 2**(m-1),
+                                           field.members.elements, 0)
+                        setattr(localRow, attributeName, enumType(flagValue))
+            self._rows.append(RowElement(localRow, row.assetId))
 
 
 FieldType = TypeVar('FieldType')

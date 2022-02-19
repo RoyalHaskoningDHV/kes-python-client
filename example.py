@@ -1,6 +1,9 @@
 
 from generated import Expertise, ProgrammerRow, SweatShopRow, sweat_shop_table, programmer_table
 
+# Loading rows
+programmer_table.load()
+
 # Adding a row
 sweat_shop = SweatShopRow(name="Race to the bottom")
 sweat_shop_reference = sweat_shop_table.appendRow(sweat_shop)
