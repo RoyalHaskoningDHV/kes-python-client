@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z\nkes/tables',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0btable.proto\x12\x03kes\"=\n\x10ReadTableRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\"$\n\nTableReply\x12\x16\n\x04rows\x18\x01 \x03(\x0b\x32\x08.kes.Row\"2\n\x03Row\x12\x0f\n\x07\x61ssetId\x18\x01 \x01(\t\x12\x1a\n\x06\x66ields\x18\x02 \x03(\x0b\x32\n.kes.Field\"\xdc\x01\n\x05\x46ield\x12\x12\n\npropertyId\x18\x01 \x01(\t\x12\r\n\x05multi\x18\x02 \x01(\x08\x12$\n\x07numbers\x18\x03 \x01(\x0b\x32\x11.kes.NumberValuesH\x00\x12$\n\x07strings\x18\x04 \x01(\x0b\x32\x11.kes.StringValuesH\x00\x12)\n\x07members\x18\x05 \x01(\x0b\x32\x16.kes.EnumerationValuesH\x00\x12\x30\n\rrowReferences\x18\x06 \x01(\x0b\x32\x17.kes.RelationshipValuesH\x00\x42\x07\n\x05value\" \n\x0cNumberValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x01\" \n\x0cStringValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t\"%\n\x11\x45numerationValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x05\"&\n\x12RelationshipValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t2>\n\x05Table\x12\x35\n\treadTable\x12\x15.kes.ReadTableRequest\x1a\x0f.kes.TableReply\"\x00\x42\x0cZ\nkes/tablesb\x06proto3'
+  serialized_pb=b'\n\x0btable.proto\x12\x03kes\"=\n\x10ReadTableRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\"S\n\x0e\x41\x64\x64RowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\x12\x16\n\x04rows\x18\x03 \x03(\x0b\x32\x08.kes.Row\";\n\x11\x44\x65leteRowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x10\n\x08\x61ssetIds\x18\x02 \x03(\t\"\x0e\n\x0c\x41\x64\x64RowsReply\"\x11\n\x0f\x44\x65leteRowsReply\"$\n\nTableReply\x12\x16\n\x04rows\x18\x01 \x03(\x0b\x32\x08.kes.Row\"2\n\x03Row\x12\x0f\n\x07\x61ssetId\x18\x01 \x01(\t\x12\x1a\n\x06\x66ields\x18\x02 \x03(\x0b\x32\n.kes.Field\"\xdc\x01\n\x05\x46ield\x12\x12\n\npropertyId\x18\x01 \x01(\t\x12\r\n\x05multi\x18\x02 \x01(\x08\x12$\n\x07numbers\x18\x03 \x01(\x0b\x32\x11.kes.NumberValuesH\x00\x12$\n\x07strings\x18\x04 \x01(\x0b\x32\x11.kes.StringValuesH\x00\x12)\n\x07members\x18\x05 \x01(\x0b\x32\x16.kes.EnumerationValuesH\x00\x12\x30\n\rrowReferences\x18\x06 \x01(\x0b\x32\x17.kes.RelationshipValuesH\x00\x42\x07\n\x05value\" \n\x0cNumberValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x01\" \n\x0cStringValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t\"%\n\x11\x45numerationValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x05\"&\n\x12RelationshipValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t2\xb1\x01\n\x05Table\x12\x35\n\treadTable\x12\x15.kes.ReadTableRequest\x1a\x0f.kes.TableReply\"\x00\x12\x33\n\x07\x61\x64\x64Rows\x12\x13.kes.AddRowsRequest\x1a\x11.kes.AddRowsReply\"\x00\x12<\n\ndeleteRows\x12\x16.kes.DeleteRowsRequest\x1a\x14.kes.DeleteRowsReply\"\x00\x42\x0cZ\nkes/tablesb\x06proto3'
 )
 
 
@@ -64,6 +64,141 @@ _READTABLEREQUEST = _descriptor.Descriptor(
 )
 
 
+_ADDROWSREQUEST = _descriptor.Descriptor(
+  name='AddRowsRequest',
+  full_name='kes.AddRowsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='inspectionId', full_name='kes.AddRowsRequest.inspectionId', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='assetTypeId', full_name='kes.AddRowsRequest.assetTypeId', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='rows', full_name='kes.AddRowsRequest.rows', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=83,
+  serialized_end=166,
+)
+
+
+_DELETEROWSREQUEST = _descriptor.Descriptor(
+  name='DeleteRowsRequest',
+  full_name='kes.DeleteRowsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='inspectionId', full_name='kes.DeleteRowsRequest.inspectionId', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='assetIds', full_name='kes.DeleteRowsRequest.assetIds', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=168,
+  serialized_end=227,
+)
+
+
+_ADDROWSREPLY = _descriptor.Descriptor(
+  name='AddRowsReply',
+  full_name='kes.AddRowsReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=229,
+  serialized_end=243,
+)
+
+
+_DELETEROWSREPLY = _descriptor.Descriptor(
+  name='DeleteRowsReply',
+  full_name='kes.DeleteRowsReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=245,
+  serialized_end=262,
+)
+
+
 _TABLEREPLY = _descriptor.Descriptor(
   name='TableReply',
   full_name='kes.TableReply',
@@ -91,8 +226,8 @@ _TABLEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=83,
-  serialized_end=119,
+  serialized_start=264,
+  serialized_end=300,
 )
 
 
@@ -130,8 +265,8 @@ _ROW = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=121,
-  serialized_end=171,
+  serialized_start=302,
+  serialized_end=352,
 )
 
 
@@ -202,8 +337,8 @@ _FIELD = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=174,
-  serialized_end=394,
+  serialized_start=355,
+  serialized_end=575,
 )
 
 
@@ -234,8 +369,8 @@ _NUMBERVALUES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=396,
-  serialized_end=428,
+  serialized_start=577,
+  serialized_end=609,
 )
 
 
@@ -266,8 +401,8 @@ _STRINGVALUES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=430,
-  serialized_end=462,
+  serialized_start=611,
+  serialized_end=643,
 )
 
 
@@ -298,8 +433,8 @@ _ENUMERATIONVALUES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=464,
-  serialized_end=501,
+  serialized_start=645,
+  serialized_end=682,
 )
 
 
@@ -330,10 +465,11 @@ _RELATIONSHIPVALUES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=503,
-  serialized_end=541,
+  serialized_start=684,
+  serialized_end=722,
 )
 
+_ADDROWSREQUEST.fields_by_name['rows'].message_type = _ROW
 _TABLEREPLY.fields_by_name['rows'].message_type = _ROW
 _ROW.fields_by_name['fields'].message_type = _FIELD
 _FIELD.fields_by_name['numbers'].message_type = _NUMBERVALUES
@@ -353,6 +489,10 @@ _FIELD.oneofs_by_name['value'].fields.append(
   _FIELD.fields_by_name['rowReferences'])
 _FIELD.fields_by_name['rowReferences'].containing_oneof = _FIELD.oneofs_by_name['value']
 DESCRIPTOR.message_types_by_name['ReadTableRequest'] = _READTABLEREQUEST
+DESCRIPTOR.message_types_by_name['AddRowsRequest'] = _ADDROWSREQUEST
+DESCRIPTOR.message_types_by_name['DeleteRowsRequest'] = _DELETEROWSREQUEST
+DESCRIPTOR.message_types_by_name['AddRowsReply'] = _ADDROWSREPLY
+DESCRIPTOR.message_types_by_name['DeleteRowsReply'] = _DELETEROWSREPLY
 DESCRIPTOR.message_types_by_name['TableReply'] = _TABLEREPLY
 DESCRIPTOR.message_types_by_name['Row'] = _ROW
 DESCRIPTOR.message_types_by_name['Field'] = _FIELD
@@ -368,6 +508,34 @@ ReadTableRequest = _reflection.GeneratedProtocolMessageType('ReadTableRequest', 
   # @@protoc_insertion_point(class_scope:kes.ReadTableRequest)
   })
 _sym_db.RegisterMessage(ReadTableRequest)
+
+AddRowsRequest = _reflection.GeneratedProtocolMessageType('AddRowsRequest', (_message.Message,), {
+  'DESCRIPTOR' : _ADDROWSREQUEST,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.AddRowsRequest)
+  })
+_sym_db.RegisterMessage(AddRowsRequest)
+
+DeleteRowsRequest = _reflection.GeneratedProtocolMessageType('DeleteRowsRequest', (_message.Message,), {
+  'DESCRIPTOR' : _DELETEROWSREQUEST,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.DeleteRowsRequest)
+  })
+_sym_db.RegisterMessage(DeleteRowsRequest)
+
+AddRowsReply = _reflection.GeneratedProtocolMessageType('AddRowsReply', (_message.Message,), {
+  'DESCRIPTOR' : _ADDROWSREPLY,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.AddRowsReply)
+  })
+_sym_db.RegisterMessage(AddRowsReply)
+
+DeleteRowsReply = _reflection.GeneratedProtocolMessageType('DeleteRowsReply', (_message.Message,), {
+  'DESCRIPTOR' : _DELETEROWSREPLY,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.DeleteRowsReply)
+  })
+_sym_db.RegisterMessage(DeleteRowsReply)
 
 TableReply = _reflection.GeneratedProtocolMessageType('TableReply', (_message.Message,), {
   'DESCRIPTOR' : _TABLEREPLY,
@@ -428,8 +596,8 @@ _TABLE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=543,
-  serialized_end=605,
+  serialized_start=725,
+  serialized_end=902,
   methods=[
   _descriptor.MethodDescriptor(
     name='readTable',
@@ -438,6 +606,26 @@ _TABLE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_READTABLEREQUEST,
     output_type=_TABLEREPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='addRows',
+    full_name='kes.Table.addRows',
+    index=1,
+    containing_service=None,
+    input_type=_ADDROWSREQUEST,
+    output_type=_ADDROWSREPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='deleteRows',
+    full_name='kes.Table.deleteRows',
+    index=2,
+    containing_service=None,
+    input_type=_DELETEROWSREQUEST,
+    output_type=_DELETEROWSREPLY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

@@ -5,16 +5,20 @@ Classes:
 """
 
 from dataclasses import dataclass
+from enum import Flag
 from functools import reduce
 from io import BufferedIOBase
 import logging
+from numbers import Number
 from typing import Generator, List, Generic, Mapping, Optional, TypeVar, get_args
 from uuid import UUID, uuid4
 
 import grpc
-from table_pb2 import ReadTableRequest
+from table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, Row
 
 from table_pb2_grpc import TableStub
+
+INSPECTION_ID = "b2f3b819-c172-45bb-add1-1f004bb6b561"
 
 RowType = TypeVar('RowType')
 
@@ -83,6 +87,11 @@ class Table(Generic[RowType]):
         self._rows[key].row = value
 
     def __delitem__(self, key: int):
+        asset_id = self._rows[key].asset_id
+
+        request = DeleteRowsRequest(assetIds=[asset_id])
+        self.__stub.deleteRows(request)
+
         del self._rows[key]
 
     def __iter__(self) -> Generator[RowType, None, None]:
@@ -96,9 +105,33 @@ class Table(Generic[RowType]):
         if not isinstance(value, self.__get_row_type()):
             raise TypeError
 
-        asset_id = uuid4()
-        self._rows.append(RowElement[RowType](value, asset_id))
-        return RowReference[RowType](self._asset_type_id, asset_id)
+        request = AddRowsRequest()
+        request.inspectionId = INSPECTION_ID
+        request.assetTypeId = str(self._asset_type_id)
+        row = request.rows.add()
+        row.assetId = str(uuid4())
+
+        for fieldName, propertyId in self._property_map.items():
+            field = row.fields.add()
+            field.propertyId = str(propertyId)
+            match getattr(value, fieldName):
+                case Number() as numberValue:
+                    field.numbers.elements.append(numberValue)
+                case str(textValue):
+                    field.strings.elements.append(textValue)
+                case [firstNumber, *rest] if isinstance(firstNumber, Number):
+                    field.numbers[:] = [firstNumber, *rest]
+                case [firstString, *rest] if type(firstString) == str:
+                    field.strings[:] = [firstString, *rest]
+                case Flag() as flag:
+                    for i, c in enumerate(bin(flag.value)[:1:-1], 1):
+                        if c == '1':
+                            field.members.elements.append(i)
+
+        self.__stub.addRows(request)
+
+        self._rows.append(RowElement[RowType](value, row.assetId))
+        return RowReference[RowType](self._asset_type_id, row.assetId)
 
     def getReferenceByRowIndex(self, rowIndex: int):
         """ Get a reference to the specified row """
@@ -106,8 +139,9 @@ class Table(Generic[RowType]):
         return RowReference[RowType](self._asset_type_id, asset_id)
 
     def load(self):
+
         reply = self.__stub.readTable(ReadTableRequest(
-            inspectionId="b2f3b819-c172-45bb-add1-1f004bb6b561", assetTypeId=str(self._asset_type_id)
+            inspectionId=INSPECTION_ID, assetTypeId=str(self._asset_type_id)
         ))
         for row in reply.rows:
             localRow = self.__get_row_type()()
