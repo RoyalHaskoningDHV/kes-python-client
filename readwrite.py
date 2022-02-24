@@ -39,7 +39,7 @@ print("enumeration", TestAssetTable[0].enumeration)
 
 del TestAssetTable[0]
 
-testAsset = TestAssetRow(text="Roel", number=666,
+testAsset = TestAssetRow(text="Roel", number=666.0,
                          enumeration=Expertise.Choice1 | Expertise.Choice2)
 
 TestAssetTable.appendRow(testAsset)

@@ -9,14 +9,14 @@ from enum import Flag
 from functools import reduce
 from io import BufferedIOBase
 import logging
-from numbers import Number
 from typing import Generator, List, Generic, Mapping, Optional, TypeVar, get_args
 from uuid import UUID, uuid4
+import uuid
 
 import grpc
-from table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, Row
+from table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply
 
-from table_pb2_grpc import TableStub
+from table_pb2_grpc import *
 
 INSPECTION_ID = "b2f3b819-c172-45bb-add1-1f004bb6b561"
 
@@ -89,7 +89,7 @@ class Table(Generic[RowType]):
     def __delitem__(self, key: int):
         asset_id = self._rows[key].asset_id
 
-        request = DeleteRowsRequest(assetIds=[asset_id])
+        request = DeleteRowsRequest(assetIds=[str(asset_id)])
         self.__stub.deleteRows(request)
 
         del self._rows[key]
@@ -109,29 +109,32 @@ class Table(Generic[RowType]):
         request.inspectionId = INSPECTION_ID
         request.assetTypeId = str(self._asset_type_id)
         row = request.rows.add()
-        row.assetId = str(uuid4())
+        asset_id = uuid4()
+        row.assetId = str(asset_id)
 
         for fieldName, propertyId in self._property_map.items():
             field = row.fields.add()
             field.propertyId = str(propertyId)
             match getattr(value, fieldName):
-                case Number() as numberValue:
-                    field.numbers.elements.append(numberValue)
+                case float(floatValue):
+                    field.numbers.elements.append(floatValue)
                 case str(textValue):
                     field.strings.elements.append(textValue)
-                case [firstNumber, *rest] if isinstance(firstNumber, Number):
-                    field.numbers[:] = [firstNumber, *rest]
+                case [firstNumber, *rest] if isinstance(firstNumber, float):
+                    field.numbers.elements[:] = [firstNumber, *rest]
                 case [firstString, *rest] if type(firstString) == str:
-                    field.strings[:] = [firstString, *rest]
+                    field.strings.elements[:] = [firstString, *rest]
                 case Flag() as flag:
                     for i, c in enumerate(bin(flag.value)[:1:-1], 1):
                         if c == '1':
                             field.members.elements.append(i)
+                case _:
+                    pass
 
         self.__stub.addRows(request)
 
-        self._rows.append(RowElement[RowType](value, row.assetId))
-        return RowReference[RowType](self._asset_type_id, row.assetId)
+        self._rows.append(RowElement[RowType](value, asset_id))
+        return RowReference[RowType](self._asset_type_id, asset_id)
 
     def getReferenceByRowIndex(self, rowIndex: int):
         """ Get a reference to the specified row """
@@ -139,12 +142,11 @@ class Table(Generic[RowType]):
         return RowReference[RowType](self._asset_type_id, asset_id)
 
     def load(self):
-
-        reply = self.__stub.readTable(ReadTableRequest(
+        reply: TableReply = self.__stub.readTable(ReadTableRequest(
             inspectionId=INSPECTION_ID, assetTypeId=str(self._asset_type_id)
         ))
         for row in reply.rows:
-            localRow = self.__get_row_type()()
+            localRow: RowType = self.__get_row_type()()
 
             for field in row.fields:
                 attributeName = self._rev_property_map.get(
@@ -171,7 +173,10 @@ class Table(Generic[RowType]):
                         flagValue = reduce(lambda r, m: r | 2**(m-1),
                                            field.members.elements, 0)
                         setattr(localRow, attributeName, enumType(flagValue))
-            self._rows.append(RowElement(localRow, row.assetId))
+                    case _:
+                        pass
+            self._rows.append(RowElement[RowType](
+                localRow, uuid.UUID(row.assetId)))
 
 
 FieldType = TypeVar('FieldType')
