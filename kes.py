@@ -40,9 +40,7 @@ class RowReference(Generic[ParticipantType]):
     asset_id: UUID
 
 
-channel: grpc.Channel = grpc.insecure_channel('localhost:50051')
-stub = TableStub(channel)
-
+class TableFull(Exception): ...
 
 class Table(Generic[RowType]):
     """
@@ -139,7 +137,15 @@ class Table(Generic[RowType]):
                             field.members.elements.append(i)
                 case _:
                     pass
-        stub.addRows(request)
+
+        try:
+            self.__stub.addRows(request)
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.ALREADY_EXISTS:
+                raise TableFull
+            else:
+                raise
+
 
         self._rows.append(RowElement[RowType](value, asset_id))
         return RowReference[RowType](self._asset_type_id, asset_id)
