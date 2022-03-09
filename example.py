@@ -1,26 +1,25 @@
+from geocoder.location import Location
+from geopy import MapBox
+from generated import TestCategoryTestAssetRow, test_category_test_asset_table
+from kes import LocationField
 
-from generated import Expertise, ProgrammerRow, SweatShopRow, sweat_shop_table, programmer_table
+# Form Row
+asset = TestCategoryTestAssetRow(string_test_property="Test String Python",
+                                 decimal_test_property=9.999,
+                                 )
+f = open("image.png", "rb")
+asset.image_property.saveImage(f.name, f.read())
 
-# Loading rows
-programmer_table.load()
+geocoder = MapBox(api_key="pk.....")
+rs: Location = geocoder.reverse(query=(52.057557132353644, 4.949373509877396))
+asset.location_property.append(LocationField.Point("Naushad's Python Location", rs.latitude, rs.longitude, rs.address))
+asset.location_property.append(LocationField.Point("Naushad's Python Location1", rs.latitude, rs.longitude, rs.address))
 
-# Adding a row
-sweat_shop = SweatShopRow(name="Race to the bottom")
-sweat_shop_reference = sweat_shop_table.appendRow(sweat_shop)
+# create Row in KES
+test_category_test_asset_table.appendRow(asset)
 
-programmer = ProgrammerRow(
-    name="Roel de Jong",
-    aliases=["Twiggler", "Twijgje"],
-    age=39,
-    expertise=Expertise.BACKEND | Expertise.FRONTEND,
-    sweat_shop=sweat_shop_reference
-)
-programmer_table.appendRow(programmer)
+# load row
+test_category_test_asset_table.load()
 
-print("name: ", programmer_table[0].name)
-
-# remove row
-del programmer_table[0]
-
-# Alternative way to set reference
-programmer.sweat_shop = sweat_shop_table.getReferenceByRowIndex(0)
+# delete row
+del test_category_test_asset_table[0]

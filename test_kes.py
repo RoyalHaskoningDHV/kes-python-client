@@ -1,7 +1,7 @@
 import unittest
 from uuid import UUID
 
-from generated import ProgrammerRow, programmer_row_property_map
+from generated1 import ProgrammerRow, programmer_row_property_map
 from kes import Table
 
 

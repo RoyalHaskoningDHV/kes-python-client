@@ -29,6 +29,11 @@ class TableStub(object):
                 request_serializer=table__pb2.DeleteRowsRequest.SerializeToString,
                 response_deserializer=table__pb2.DeleteRowsReply.FromString,
                 )
+        self.loadImage = channel.unary_unary(
+                '/kes.Table/loadImage',
+                request_serializer=table__pb2.LoadImageRequest.SerializeToString,
+                response_deserializer=table__pb2.LoadImageReply.FromString,
+                )
 
 
 class TableServicer(object):
@@ -52,6 +57,12 @@ class TableServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def loadImage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TableServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -69,6 +80,11 @@ def add_TableServicer_to_server(servicer, server):
                     servicer.deleteRows,
                     request_deserializer=table__pb2.DeleteRowsRequest.FromString,
                     response_serializer=table__pb2.DeleteRowsReply.SerializeToString,
+            ),
+            'loadImage': grpc.unary_unary_rpc_method_handler(
+                    servicer.loadImage,
+                    request_deserializer=table__pb2.LoadImageRequest.FromString,
+                    response_serializer=table__pb2.LoadImageReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -128,5 +144,22 @@ class Table(object):
         return grpc.experimental.unary_unary(request, target, '/kes.Table/deleteRows',
             table__pb2.DeleteRowsRequest.SerializeToString,
             table__pb2.DeleteRowsReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def loadImage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kes.Table/loadImage',
+            table__pb2.LoadImageRequest.SerializeToString,
+            table__pb2.LoadImageReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

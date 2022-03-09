@@ -20,6 +20,10 @@ class TableStub:
         table_pb2.DeleteRowsRequest,
         table_pb2.DeleteRowsReply]
 
+    loadImage: grpc.UnaryUnaryMultiCallable[
+        table_pb2.LoadImageRequest,
+        table_pb2.LoadImageReply]
+
 
 class TableServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
@@ -39,6 +43,12 @@ class TableServicer(metaclass=abc.ABCMeta):
         request: table_pb2.DeleteRowsRequest,
         context: grpc.ServicerContext,
     ) -> table_pb2.DeleteRowsReply: ...
+
+    @abc.abstractmethod
+    def loadImage(self,
+        request: table_pb2.LoadImageRequest,
+        context: grpc.ServicerContext,
+    ) -> table_pb2.LoadImageReply: ...
 
 
 def add_TableServicer_to_server(servicer: TableServicer, server: grpc.Server) -> None: ...

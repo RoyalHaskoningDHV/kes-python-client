@@ -3,22 +3,21 @@
 Classes:
     Table: Rows represent assets and columns properties.
 """
-
+import logging
+import uuid
 from dataclasses import dataclass
 from enum import Flag
 from functools import reduce
-from io import BufferedIOBase
-import logging
-from typing import Generator, List, Generic, Mapping, Optional, TypeVar, get_args
+from typing import Generator, List, Generic, Mapping, TypeVar, get_args
 from uuid import UUID, uuid4
-import uuid
 
 import grpc
-from table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply
 
+from table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply, LoadImageReply, \
+    LoadImageRequest, LocationPoint
 from table_pb2_grpc import *
 
-INSPECTION_ID = "b2f3b819-c172-45bb-add1-1f004bb6b561"
+INSPECTION_ID = "aba69bae-6500-4731-bb08-5bcac87f6442"
 
 RowType = TypeVar('RowType')
 
@@ -40,6 +39,10 @@ class RowReference(Generic[ParticipantType]):
     asset_id: UUID
 
 
+channel: grpc.Channel = grpc.insecure_channel('localhost:50051')
+stub = TableStub(channel)
+
+
 class Table(Generic[RowType]):
     """
     This class acts as a container for rows.
@@ -48,9 +51,6 @@ class Table(Generic[RowType]):
     Type parameters:
         RowType: The type of rows hold by this class.
     """
-
-    __channel: grpc.Channel = grpc.insecure_channel('localhost:50051')
-    __stub = TableStub(__channel)
 
     _asset_type_id: UUID
     _rows: List[RowElement[RowType]]
@@ -90,7 +90,7 @@ class Table(Generic[RowType]):
         asset_id = self._rows[key].asset_id
 
         request = DeleteRowsRequest(assetIds=[str(asset_id)])
-        self.__stub.deleteRows(request)
+        stub.deleteRows(request)
 
         del self._rows[key]
 
@@ -120,6 +120,14 @@ class Table(Generic[RowType]):
                     field.numbers.elements.append(floatValue)
                 case str(textValue):
                     field.strings.elements.append(textValue)
+                case ImageField() as imageValue:
+                    field.image.fileName = imageValue.name
+                    field.image.chunk = imageValue.file
+                case LocationField() as locationValue:
+                    for point in locationValue._points:
+                        locPoint = LocationPoint(name=point.name, latitude=point.latitude,
+                                                 longitude=point.longitude, address=point.address)
+                        field.locations.elements.append(locPoint)
                 case [firstNumber, *rest] if isinstance(firstNumber, float):
                     field.numbers.elements[:] = [firstNumber, *rest]
                 case [firstString, *rest] if type(firstString) == str:
@@ -130,8 +138,7 @@ class Table(Generic[RowType]):
                             field.members.elements.append(i)
                 case _:
                     pass
-
-        self.__stub.addRows(request)
+        stub.addRows(request)
 
         self._rows.append(RowElement[RowType](value, asset_id))
         return RowReference[RowType](self._asset_type_id, asset_id)
@@ -142,7 +149,7 @@ class Table(Generic[RowType]):
         return RowReference[RowType](self._asset_type_id, asset_id)
 
     def load(self):
-        reply: TableReply = self.__stub.readTable(ReadTableRequest(
+        reply: TableReply = stub.readTable(ReadTableRequest(
             inspectionId=INSPECTION_ID, assetTypeId=str(self._asset_type_id)
         ))
         for row in reply.rows:
@@ -168,9 +175,19 @@ class Table(Generic[RowType]):
                     case "strings":
                         value = next(iter(field.strings.elements), None)
                         setattr(localRow, attributeName, value)
+                    case "image":
+                        imageField = ImageField(property_id=field.propertyId)
+                        imageField.name = field.image.fileName
+                        imageField._image_value_id = field.image.id
+                        setattr(localRow, "_" + attributeName, imageField)  # TODO check how to setattr fieldImage
+                    case "locations":
+                        locationField = LocationField(property_id=field.propertyId)
+                        for point in field.locations.elements:
+                            locationField.addLocation(point.name, point.latitude, point.longitude, point.address)
+                        setattr(localRow, "_" + attributeName, locationField)
                     case "members":
                         enumType = type(getattr(localRow, attributeName))
-                        flagValue = reduce(lambda r, m: r | 2**(m-1),
+                        flagValue = reduce(lambda r, m: r | 2 ** (m - 1),
                                            field.members.elements, 0)
                         setattr(localRow, attributeName, enumType(flagValue))
                     case _:
@@ -185,6 +202,9 @@ FieldType = TypeVar('FieldType')
 class ImageField:
     """ This class allows saving and reading images in fields """
     _property_id: UUID
+    _image_value_id: UUID
+    file: bytes
+    name: str
 
     def __init__(self, property_id: UUID):
         """
@@ -195,10 +215,46 @@ class ImageField:
         """
         self._property_id = property_id
 
-    def loadImage(self) -> Optional[BufferedIOBase]:
+    def loadImage(self):
         """ Loads an image and returns it as a binary stream if present """
-        pass
+        reply: LoadImageReply = stub.loadImage(LoadImageRequest(
+            imageValueId=str(self._image_value_id), fileName=self.name
+        ))
+        self.file = reply.chunk
+        return self.file
 
-    def saveImage(self, image: BufferedIOBase):
+    def saveImage(self, name: str, image: bytes):
         """ Writes the given binary stream as the image of this field  """
-        pass
+        self.file = image
+        self.name = name
+
+
+class LocationField:
+    """ This class allows saving and reading location in fields """
+
+    @dataclass
+    class Point:
+        name: str
+        latitude: float
+        longitude: float
+        address: str
+
+    _property_id: UUID
+    _points: List[Point]
+
+    def __init__(self, property_id: UUID):
+        self._property_id = property_id
+        self._points = []
+
+    def addLocation(self, name: str, latitude: float, longitude: float, address: str):
+        location = self.Point(name=name, latitude=latitude, longitude=longitude, address=address)
+        self._points.append(location)
+
+    def getPoints(self):
+        return self._points
+
+    def __getitem__(self, key: int):
+        return self._points[key]
+
+    def append(self, value: Point):
+        self._points.append(value)

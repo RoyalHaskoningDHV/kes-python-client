@@ -3,6 +3,7 @@
 # source: table.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -13,495 +14,27 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-  name='table.proto',
-  package='kes',
-  syntax='proto3',
-  serialized_options=b'Z\nkes/tables',
-  create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0btable.proto\x12\x03kes\"=\n\x10ReadTableRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\"S\n\x0e\x41\x64\x64RowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\x12\x16\n\x04rows\x18\x03 \x03(\x0b\x32\x08.kes.Row\";\n\x11\x44\x65leteRowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x10\n\x08\x61ssetIds\x18\x02 \x03(\t\"\x0e\n\x0c\x41\x64\x64RowsReply\"\x11\n\x0f\x44\x65leteRowsReply\"$\n\nTableReply\x12\x16\n\x04rows\x18\x01 \x03(\x0b\x32\x08.kes.Row\"2\n\x03Row\x12\x0f\n\x07\x61ssetId\x18\x01 \x01(\t\x12\x1a\n\x06\x66ields\x18\x02 \x03(\x0b\x32\n.kes.Field\"\xdc\x01\n\x05\x46ield\x12\x12\n\npropertyId\x18\x01 \x01(\t\x12\r\n\x05multi\x18\x02 \x01(\x08\x12$\n\x07numbers\x18\x03 \x01(\x0b\x32\x11.kes.NumberValuesH\x00\x12$\n\x07strings\x18\x04 \x01(\x0b\x32\x11.kes.StringValuesH\x00\x12)\n\x07members\x18\x05 \x01(\x0b\x32\x16.kes.EnumerationValuesH\x00\x12\x30\n\rrowReferences\x18\x06 \x01(\x0b\x32\x17.kes.RelationshipValuesH\x00\x42\x07\n\x05value\" \n\x0cNumberValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x01\" \n\x0cStringValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t\"%\n\x11\x45numerationValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x05\"&\n\x12RelationshipValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t2\xb1\x01\n\x05Table\x12\x35\n\treadTable\x12\x15.kes.ReadTableRequest\x1a\x0f.kes.TableReply\"\x00\x12\x33\n\x07\x61\x64\x64Rows\x12\x13.kes.AddRowsRequest\x1a\x11.kes.AddRowsReply\"\x00\x12<\n\ndeleteRows\x12\x16.kes.DeleteRowsRequest\x1a\x14.kes.DeleteRowsReply\"\x00\x42\x0cZ\nkes/tablesb\x06proto3'
-)
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0btable.proto\x12\x03kes\"=\n\x10ReadTableRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\"S\n\x0e\x41\x64\x64RowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\x12\x16\n\x04rows\x18\x03 \x03(\x0b\x32\x08.kes.Row\";\n\x11\x44\x65leteRowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x10\n\x08\x61ssetIds\x18\x02 \x03(\t\"\x0e\n\x0c\x41\x64\x64RowsReply\"\x11\n\x0f\x44\x65leteRowsReply\"$\n\nTableReply\x12\x16\n\x04rows\x18\x01 \x03(\x0b\x32\x08.kes.Row\"2\n\x03Row\x12\x0f\n\x07\x61ssetId\x18\x01 \x01(\t\x12\x1a\n\x06\x66ields\x18\x02 \x03(\x0b\x32\n.kes.Field\"\xa8\x02\n\x05\x46ield\x12\x12\n\npropertyId\x18\x01 \x01(\t\x12\r\n\x05multi\x18\x02 \x01(\x08\x12$\n\x07numbers\x18\x03 \x01(\x0b\x32\x11.kes.NumberValuesH\x00\x12$\n\x07strings\x18\x04 \x01(\x0b\x32\x11.kes.StringValuesH\x00\x12)\n\x07members\x18\x05 \x01(\x0b\x32\x16.kes.EnumerationValuesH\x00\x12\x30\n\rrowReferences\x18\x06 \x01(\x0b\x32\x17.kes.RelationshipValuesH\x00\x12 \n\x05image\x18\x07 \x01(\x0b\x32\x0f.kes.ImageValueH\x00\x12(\n\tlocations\x18\x08 \x01(\x0b\x32\x13.kes.LocationValuesH\x00\x42\x07\n\x05value\" \n\x0cNumberValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x01\" \n\x0cStringValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t\"%\n\x11\x45numerationValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x05\"&\n\x12RelationshipValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t\"9\n\nImageValue\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ileName\x18\x02 \x01(\t\x12\r\n\x05\x63hunk\x18\x03 \x01(\x0c\"6\n\x0eLocationValues\x12$\n\x08\x65lements\x18\x01 \x03(\x0b\x32\x12.kes.LocationPoint\"S\n\rLocationPoint\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08latitude\x18\x02 \x01(\x01\x12\x11\n\tlongitude\x18\x03 \x01(\x01\x12\x0f\n\x07\x61\x64\x64ress\x18\x04 \x01(\t\":\n\x10LoadImageRequest\x12\x14\n\x0cimageValueId\x18\x01 \x01(\t\x12\x10\n\x08\x66ileName\x18\x02 \x01(\t\"\x1f\n\x0eLoadImageReply\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\x32\xec\x01\n\x05Table\x12\x35\n\treadTable\x12\x15.kes.ReadTableRequest\x1a\x0f.kes.TableReply\"\x00\x12\x33\n\x07\x61\x64\x64Rows\x12\x13.kes.AddRowsRequest\x1a\x11.kes.AddRowsReply\"\x00\x12<\n\ndeleteRows\x12\x16.kes.DeleteRowsRequest\x1a\x14.kes.DeleteRowsReply\"\x00\x12\x39\n\tloadImage\x12\x15.kes.LoadImageRequest\x1a\x13.kes.LoadImageReply\"\x00\x42\x0cZ\nkes/tablesb\x06proto3')
 
 
 
-
-_READTABLEREQUEST = _descriptor.Descriptor(
-  name='ReadTableRequest',
-  full_name='kes.ReadTableRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='inspectionId', full_name='kes.ReadTableRequest.inspectionId', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='assetTypeId', full_name='kes.ReadTableRequest.assetTypeId', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=20,
-  serialized_end=81,
-)
-
-
-_ADDROWSREQUEST = _descriptor.Descriptor(
-  name='AddRowsRequest',
-  full_name='kes.AddRowsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='inspectionId', full_name='kes.AddRowsRequest.inspectionId', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='assetTypeId', full_name='kes.AddRowsRequest.assetTypeId', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='rows', full_name='kes.AddRowsRequest.rows', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=83,
-  serialized_end=166,
-)
-
-
-_DELETEROWSREQUEST = _descriptor.Descriptor(
-  name='DeleteRowsRequest',
-  full_name='kes.DeleteRowsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='inspectionId', full_name='kes.DeleteRowsRequest.inspectionId', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='assetIds', full_name='kes.DeleteRowsRequest.assetIds', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=168,
-  serialized_end=227,
-)
-
-
-_ADDROWSREPLY = _descriptor.Descriptor(
-  name='AddRowsReply',
-  full_name='kes.AddRowsReply',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=229,
-  serialized_end=243,
-)
-
-
-_DELETEROWSREPLY = _descriptor.Descriptor(
-  name='DeleteRowsReply',
-  full_name='kes.DeleteRowsReply',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=245,
-  serialized_end=262,
-)
-
-
-_TABLEREPLY = _descriptor.Descriptor(
-  name='TableReply',
-  full_name='kes.TableReply',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='rows', full_name='kes.TableReply.rows', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=264,
-  serialized_end=300,
-)
-
-
-_ROW = _descriptor.Descriptor(
-  name='Row',
-  full_name='kes.Row',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='assetId', full_name='kes.Row.assetId', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='fields', full_name='kes.Row.fields', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=302,
-  serialized_end=352,
-)
-
-
-_FIELD = _descriptor.Descriptor(
-  name='Field',
-  full_name='kes.Field',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='propertyId', full_name='kes.Field.propertyId', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='multi', full_name='kes.Field.multi', index=1,
-      number=2, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='numbers', full_name='kes.Field.numbers', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='strings', full_name='kes.Field.strings', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='members', full_name='kes.Field.members', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='rowReferences', full_name='kes.Field.rowReferences', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='value', full_name='kes.Field.value',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-  ],
-  serialized_start=355,
-  serialized_end=575,
-)
-
-
-_NUMBERVALUES = _descriptor.Descriptor(
-  name='NumberValues',
-  full_name='kes.NumberValues',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='elements', full_name='kes.NumberValues.elements', index=0,
-      number=1, type=1, cpp_type=5, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=577,
-  serialized_end=609,
-)
-
-
-_STRINGVALUES = _descriptor.Descriptor(
-  name='StringValues',
-  full_name='kes.StringValues',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='elements', full_name='kes.StringValues.elements', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=611,
-  serialized_end=643,
-)
-
-
-_ENUMERATIONVALUES = _descriptor.Descriptor(
-  name='EnumerationValues',
-  full_name='kes.EnumerationValues',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='elements', full_name='kes.EnumerationValues.elements', index=0,
-      number=1, type=5, cpp_type=1, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=645,
-  serialized_end=682,
-)
-
-
-_RELATIONSHIPVALUES = _descriptor.Descriptor(
-  name='RelationshipValues',
-  full_name='kes.RelationshipValues',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='elements', full_name='kes.RelationshipValues.elements', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=684,
-  serialized_end=722,
-)
-
-_ADDROWSREQUEST.fields_by_name['rows'].message_type = _ROW
-_TABLEREPLY.fields_by_name['rows'].message_type = _ROW
-_ROW.fields_by_name['fields'].message_type = _FIELD
-_FIELD.fields_by_name['numbers'].message_type = _NUMBERVALUES
-_FIELD.fields_by_name['strings'].message_type = _STRINGVALUES
-_FIELD.fields_by_name['members'].message_type = _ENUMERATIONVALUES
-_FIELD.fields_by_name['rowReferences'].message_type = _RELATIONSHIPVALUES
-_FIELD.oneofs_by_name['value'].fields.append(
-  _FIELD.fields_by_name['numbers'])
-_FIELD.fields_by_name['numbers'].containing_oneof = _FIELD.oneofs_by_name['value']
-_FIELD.oneofs_by_name['value'].fields.append(
-  _FIELD.fields_by_name['strings'])
-_FIELD.fields_by_name['strings'].containing_oneof = _FIELD.oneofs_by_name['value']
-_FIELD.oneofs_by_name['value'].fields.append(
-  _FIELD.fields_by_name['members'])
-_FIELD.fields_by_name['members'].containing_oneof = _FIELD.oneofs_by_name['value']
-_FIELD.oneofs_by_name['value'].fields.append(
-  _FIELD.fields_by_name['rowReferences'])
-_FIELD.fields_by_name['rowReferences'].containing_oneof = _FIELD.oneofs_by_name['value']
-DESCRIPTOR.message_types_by_name['ReadTableRequest'] = _READTABLEREQUEST
-DESCRIPTOR.message_types_by_name['AddRowsRequest'] = _ADDROWSREQUEST
-DESCRIPTOR.message_types_by_name['DeleteRowsRequest'] = _DELETEROWSREQUEST
-DESCRIPTOR.message_types_by_name['AddRowsReply'] = _ADDROWSREPLY
-DESCRIPTOR.message_types_by_name['DeleteRowsReply'] = _DELETEROWSREPLY
-DESCRIPTOR.message_types_by_name['TableReply'] = _TABLEREPLY
-DESCRIPTOR.message_types_by_name['Row'] = _ROW
-DESCRIPTOR.message_types_by_name['Field'] = _FIELD
-DESCRIPTOR.message_types_by_name['NumberValues'] = _NUMBERVALUES
-DESCRIPTOR.message_types_by_name['StringValues'] = _STRINGVALUES
-DESCRIPTOR.message_types_by_name['EnumerationValues'] = _ENUMERATIONVALUES
-DESCRIPTOR.message_types_by_name['RelationshipValues'] = _RELATIONSHIPVALUES
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_READTABLEREQUEST = DESCRIPTOR.message_types_by_name['ReadTableRequest']
+_ADDROWSREQUEST = DESCRIPTOR.message_types_by_name['AddRowsRequest']
+_DELETEROWSREQUEST = DESCRIPTOR.message_types_by_name['DeleteRowsRequest']
+_ADDROWSREPLY = DESCRIPTOR.message_types_by_name['AddRowsReply']
+_DELETEROWSREPLY = DESCRIPTOR.message_types_by_name['DeleteRowsReply']
+_TABLEREPLY = DESCRIPTOR.message_types_by_name['TableReply']
+_ROW = DESCRIPTOR.message_types_by_name['Row']
+_FIELD = DESCRIPTOR.message_types_by_name['Field']
+_NUMBERVALUES = DESCRIPTOR.message_types_by_name['NumberValues']
+_STRINGVALUES = DESCRIPTOR.message_types_by_name['StringValues']
+_ENUMERATIONVALUES = DESCRIPTOR.message_types_by_name['EnumerationValues']
+_RELATIONSHIPVALUES = DESCRIPTOR.message_types_by_name['RelationshipValues']
+_IMAGEVALUE = DESCRIPTOR.message_types_by_name['ImageValue']
+_LOCATIONVALUES = DESCRIPTOR.message_types_by_name['LocationValues']
+_LOCATIONPOINT = DESCRIPTOR.message_types_by_name['LocationPoint']
+_LOADIMAGEREQUEST = DESCRIPTOR.message_types_by_name['LoadImageRequest']
+_LOADIMAGEREPLY = DESCRIPTOR.message_types_by_name['LoadImageReply']
 ReadTableRequest = _reflection.GeneratedProtocolMessageType('ReadTableRequest', (_message.Message,), {
   'DESCRIPTOR' : _READTABLEREQUEST,
   '__module__' : 'table_pb2'
@@ -586,52 +119,80 @@ RelationshipValues = _reflection.GeneratedProtocolMessageType('RelationshipValue
   })
 _sym_db.RegisterMessage(RelationshipValues)
 
+ImageValue = _reflection.GeneratedProtocolMessageType('ImageValue', (_message.Message,), {
+  'DESCRIPTOR' : _IMAGEVALUE,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.ImageValue)
+  })
+_sym_db.RegisterMessage(ImageValue)
 
-DESCRIPTOR._options = None
+LocationValues = _reflection.GeneratedProtocolMessageType('LocationValues', (_message.Message,), {
+  'DESCRIPTOR' : _LOCATIONVALUES,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.LocationValues)
+  })
+_sym_db.RegisterMessage(LocationValues)
 
-_TABLE = _descriptor.ServiceDescriptor(
-  name='Table',
-  full_name='kes.Table',
-  file=DESCRIPTOR,
-  index=0,
-  serialized_options=None,
-  create_key=_descriptor._internal_create_key,
-  serialized_start=725,
-  serialized_end=902,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='readTable',
-    full_name='kes.Table.readTable',
-    index=0,
-    containing_service=None,
-    input_type=_READTABLEREQUEST,
-    output_type=_TABLEREPLY,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='addRows',
-    full_name='kes.Table.addRows',
-    index=1,
-    containing_service=None,
-    input_type=_ADDROWSREQUEST,
-    output_type=_ADDROWSREPLY,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='deleteRows',
-    full_name='kes.Table.deleteRows',
-    index=2,
-    containing_service=None,
-    input_type=_DELETEROWSREQUEST,
-    output_type=_DELETEROWSREPLY,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-])
-_sym_db.RegisterServiceDescriptor(_TABLE)
+LocationPoint = _reflection.GeneratedProtocolMessageType('LocationPoint', (_message.Message,), {
+  'DESCRIPTOR' : _LOCATIONPOINT,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.LocationPoint)
+  })
+_sym_db.RegisterMessage(LocationPoint)
 
-DESCRIPTOR.services_by_name['Table'] = _TABLE
+LoadImageRequest = _reflection.GeneratedProtocolMessageType('LoadImageRequest', (_message.Message,), {
+  'DESCRIPTOR' : _LOADIMAGEREQUEST,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.LoadImageRequest)
+  })
+_sym_db.RegisterMessage(LoadImageRequest)
 
+LoadImageReply = _reflection.GeneratedProtocolMessageType('LoadImageReply', (_message.Message,), {
+  'DESCRIPTOR' : _LOADIMAGEREPLY,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.LoadImageReply)
+  })
+_sym_db.RegisterMessage(LoadImageReply)
+
+_TABLE = DESCRIPTOR.services_by_name['Table']
+if _descriptor._USE_C_DESCRIPTORS == False:
+
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\nkes/tables'
+  _READTABLEREQUEST._serialized_start=20
+  _READTABLEREQUEST._serialized_end=81
+  _ADDROWSREQUEST._serialized_start=83
+  _ADDROWSREQUEST._serialized_end=166
+  _DELETEROWSREQUEST._serialized_start=168
+  _DELETEROWSREQUEST._serialized_end=227
+  _ADDROWSREPLY._serialized_start=229
+  _ADDROWSREPLY._serialized_end=243
+  _DELETEROWSREPLY._serialized_start=245
+  _DELETEROWSREPLY._serialized_end=262
+  _TABLEREPLY._serialized_start=264
+  _TABLEREPLY._serialized_end=300
+  _ROW._serialized_start=302
+  _ROW._serialized_end=352
+  _FIELD._serialized_start=355
+  _FIELD._serialized_end=651
+  _NUMBERVALUES._serialized_start=653
+  _NUMBERVALUES._serialized_end=685
+  _STRINGVALUES._serialized_start=687
+  _STRINGVALUES._serialized_end=719
+  _ENUMERATIONVALUES._serialized_start=721
+  _ENUMERATIONVALUES._serialized_end=758
+  _RELATIONSHIPVALUES._serialized_start=760
+  _RELATIONSHIPVALUES._serialized_end=798
+  _IMAGEVALUE._serialized_start=800
+  _IMAGEVALUE._serialized_end=857
+  _LOCATIONVALUES._serialized_start=859
+  _LOCATIONVALUES._serialized_end=913
+  _LOCATIONPOINT._serialized_start=915
+  _LOCATIONPOINT._serialized_end=998
+  _LOADIMAGEREQUEST._serialized_start=1000
+  _LOADIMAGEREQUEST._serialized_end=1058
+  _LOADIMAGEREPLY._serialized_start=1060
+  _LOADIMAGEREPLY._serialized_end=1091
+  _TABLE._serialized_start=1094
+  _TABLE._serialized_end=1330
 # @@protoc_insertion_point(module_scope)
