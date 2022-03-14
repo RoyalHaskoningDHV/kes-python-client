@@ -8,7 +8,9 @@ import uuid
 from dataclasses import dataclass
 from enum import Flag
 from functools import reduce
-from typing import Generator, List, Generic, Mapping, TypeVar, get_args
+from io import BufferedIOBase
+import logging
+from typing import Generator, List, Generic, Mapping, Optional, Type, TypeVar
 from uuid import UUID, uuid4
 
 import grpc
@@ -17,7 +19,8 @@ from table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, Table
     SaveImageRequest, SaveImageReply
 from table_pb2_grpc import *
 
-INSPECTION_ID = "b5fb4596-9363-41b9-9160-aa7f22c40990"
+from proto.table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply
+from proto.table_pb2_grpc import TableStub
 
 RowType = TypeVar('RowType')
 chunkSize = 60 * 1024  # 64 KiB
@@ -40,7 +43,9 @@ class RowReference(Generic[ParticipantType]):
     asset_id: UUID
 
 
-class TableFull(Exception): ...
+class TableFull(Exception):
+    ...
+
 
 class Table(Generic[RowType]):
     """
@@ -51,28 +56,32 @@ class Table(Generic[RowType]):
         RowType: The type of rows hold by this class.
     """
 
+    _stub: TableStub
+    _inspection_id: UUID
+    _row_type: Type[RowType]
     _asset_type_id: UUID
     _rows: List[RowElement[RowType]]
     _property_map: Mapping[str, UUID]
     _rev_property_map: Mapping[UUID, str]
 
-    def __init__(self, asset_type_id: UUID, property_map: Mapping[str, UUID]):
+    def __init__(self, stub: TableStub, inspection_id: UUID, row_type: Type[RowType], asset_type_id: UUID, property_map: Mapping[str, UUID]):
         """
         The constructor for Table class.
+        Tables are usually created using the :py:meth:Activity.build_table
 
         Parameters:
+           inspection_id (UUID): Id of the inspection from which the table is read and written to.
            asset_type_id (UUID): Id of the asset type corresponding with this table.
            property_map (Mapping[str, UUID]): Mapping of all field of row of this table to property ids.
         """
 
+        self._stub = stub
+        self._inspection_id = inspection_id
+        self._row_type = row_type
         self._asset_type_id = asset_type_id
         self._rows = []
         self._property_map = property_map
         self._rev_property_map = {v: k for k, v in property_map.items()}
-
-    def __get_row_type(self):
-        # __orig_class__ is an implementation detail but the benefits are too enticing
-        return get_args(self.__orig_class__)[0]  # type: ignore
 
     def __len__(self):
         return len(self._rows)
@@ -81,7 +90,7 @@ class Table(Generic[RowType]):
         return self._rows[key].row
 
     def __set__item__(self, key: int, value: RowType):
-        if not isinstance(value, self.__get_row_type()):
+        if not isinstance(value, self._row_type):
             raise TypeError
         self._rows[key].row = value
 
@@ -89,7 +98,7 @@ class Table(Generic[RowType]):
         asset_id = self._rows[key].asset_id
 
         request = DeleteRowsRequest(assetIds=[str(asset_id)])
-        stub.deleteRows(request)
+        self._stub.deleteRows(request)
 
         del self._rows[key]
 
@@ -101,11 +110,11 @@ class Table(Generic[RowType]):
 
     def appendRow(self, value: RowType):
         """ Adds the row to the end of the table. Returns a row reference. """
-        if not isinstance(value, self.__get_row_type()):
+        if not isinstance(value, self._row_type):
             raise TypeError
 
         request = AddRowsRequest()
-        request.inspectionId = INSPECTION_ID
+        request.inspectionId = str(self._inspection_id)
         request.assetTypeId = str(self._asset_type_id)
         row = request.rows.add()
         asset_id = uuid4()
@@ -139,13 +148,12 @@ class Table(Generic[RowType]):
                     pass
 
         try:
-            self.__stub.addRows(request)
+            self._stub.addRows(request)
         except grpc.RpcError as e:
             if e.code() == grpc.StatusCode.ALREADY_EXISTS:
                 raise TableFull
             else:
                 raise
-
 
         self._rows.append(RowElement[RowType](value, asset_id))
         return RowReference[RowType](self._asset_type_id, asset_id)
@@ -156,11 +164,11 @@ class Table(Generic[RowType]):
         return RowReference[RowType](self._asset_type_id, asset_id)
 
     def load(self):
-        reply: TableReply = stub.readTable(ReadTableRequest(
-            inspectionId=INSPECTION_ID, assetTypeId=str(self._asset_type_id)
+        reply: TableReply = self._stub.readTable(ReadTableRequest(
+            inspectionId=str(self._inspection_id), assetTypeId=str(self._asset_type_id)
         ))
         for row in reply.rows:
-            localRow: RowType = self.__get_row_type()()
+            localRow: RowType = self._row_type()
 
             for field in row.fields:
                 attributeName = self._rev_property_map.get(
@@ -194,7 +202,7 @@ class Table(Generic[RowType]):
                         setattr(localRow, "_" + attributeName, locationField)
                     case "members":
                         enumType = type(getattr(localRow, attributeName))
-                        flagValue = reduce(lambda r, m: r | 2 ** (m - 1),
+                        flagValue = reduce(lambda r, m: r | 2**(m - 1),
                                            field.members.elements, 0)
                         setattr(localRow, attributeName, enumType(flagValue))
                     case _:
@@ -203,7 +211,11 @@ class Table(Generic[RowType]):
                 localRow, uuid.UUID(row.assetId)))
 
 
-FieldType = TypeVar('FieldType')
+@dataclass
+class TableDef(Generic[RowType]):
+    row_type: Type[RowType]
+    asset_type_id: UUID
+    property_map: Mapping[str, UUID]
 
 
 class ImageField:
