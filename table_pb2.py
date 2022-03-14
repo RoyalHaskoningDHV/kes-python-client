@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0btable.proto\x12\x03kes\"=\n\x10ReadTableRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\"S\n\x0e\x41\x64\x64RowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\x12\x16\n\x04rows\x18\x03 \x03(\x0b\x32\x08.kes.Row\";\n\x11\x44\x65leteRowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x10\n\x08\x61ssetIds\x18\x02 \x03(\t\"\x0e\n\x0c\x41\x64\x64RowsReply\"\x11\n\x0f\x44\x65leteRowsReply\"$\n\nTableReply\x12\x16\n\x04rows\x18\x01 \x03(\x0b\x32\x08.kes.Row\"2\n\x03Row\x12\x0f\n\x07\x61ssetId\x18\x01 \x01(\t\x12\x1a\n\x06\x66ields\x18\x02 \x03(\x0b\x32\n.kes.Field\"\xa8\x02\n\x05\x46ield\x12\x12\n\npropertyId\x18\x01 \x01(\t\x12\r\n\x05multi\x18\x02 \x01(\x08\x12$\n\x07numbers\x18\x03 \x01(\x0b\x32\x11.kes.NumberValuesH\x00\x12$\n\x07strings\x18\x04 \x01(\x0b\x32\x11.kes.StringValuesH\x00\x12)\n\x07members\x18\x05 \x01(\x0b\x32\x16.kes.EnumerationValuesH\x00\x12\x30\n\rrowReferences\x18\x06 \x01(\x0b\x32\x17.kes.RelationshipValuesH\x00\x12 \n\x05image\x18\x07 \x01(\x0b\x32\x0f.kes.ImageValueH\x00\x12(\n\tlocations\x18\x08 \x01(\x0b\x32\x13.kes.LocationValuesH\x00\x42\x07\n\x05value\" \n\x0cNumberValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x01\" \n\x0cStringValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t\"%\n\x11\x45numerationValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x05\"&\n\x12RelationshipValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t\"9\n\nImageValue\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ileName\x18\x02 \x01(\t\x12\r\n\x05\x63hunk\x18\x03 \x01(\x0c\"6\n\x0eLocationValues\x12$\n\x08\x65lements\x18\x01 \x03(\x0b\x32\x12.kes.LocationPoint\"S\n\rLocationPoint\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08latitude\x18\x02 \x01(\x01\x12\x11\n\tlongitude\x18\x03 \x01(\x01\x12\x0f\n\x07\x61\x64\x64ress\x18\x04 \x01(\t\":\n\x10LoadImageRequest\x12\x14\n\x0cimageValueId\x18\x01 \x01(\t\x12\x10\n\x08\x66ileName\x18\x02 \x01(\t\"\x1f\n\x0eLoadImageReply\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\x32\xec\x01\n\x05Table\x12\x35\n\treadTable\x12\x15.kes.ReadTableRequest\x1a\x0f.kes.TableReply\"\x00\x12\x33\n\x07\x61\x64\x64Rows\x12\x13.kes.AddRowsRequest\x1a\x11.kes.AddRowsReply\"\x00\x12<\n\ndeleteRows\x12\x16.kes.DeleteRowsRequest\x1a\x14.kes.DeleteRowsReply\"\x00\x12\x39\n\tloadImage\x12\x15.kes.LoadImageRequest\x1a\x13.kes.LoadImageReply\"\x00\x42\x0cZ\nkes/tablesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0btable.proto\x12\x03kes\"=\n\x10ReadTableRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\"S\n\x0e\x41\x64\x64RowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x13\n\x0b\x61ssetTypeId\x18\x02 \x01(\t\x12\x16\n\x04rows\x18\x03 \x03(\x0b\x32\x08.kes.Row\";\n\x11\x44\x65leteRowsRequest\x12\x14\n\x0cinspectionId\x18\x01 \x01(\t\x12\x10\n\x08\x61ssetIds\x18\x02 \x03(\t\"\x0e\n\x0c\x41\x64\x64RowsReply\"\x11\n\x0f\x44\x65leteRowsReply\"$\n\nTableReply\x12\x16\n\x04rows\x18\x01 \x03(\x0b\x32\x08.kes.Row\"2\n\x03Row\x12\x0f\n\x07\x61ssetId\x18\x01 \x01(\t\x12\x1a\n\x06\x66ields\x18\x02 \x03(\x0b\x32\n.kes.Field\"\xa8\x02\n\x05\x46ield\x12\x12\n\npropertyId\x18\x01 \x01(\t\x12\r\n\x05multi\x18\x02 \x01(\x08\x12$\n\x07numbers\x18\x03 \x01(\x0b\x32\x11.kes.NumberValuesH\x00\x12$\n\x07strings\x18\x04 \x01(\x0b\x32\x11.kes.StringValuesH\x00\x12)\n\x07members\x18\x05 \x01(\x0b\x32\x16.kes.EnumerationValuesH\x00\x12\x30\n\rrowReferences\x18\x06 \x01(\x0b\x32\x17.kes.RelationshipValuesH\x00\x12 \n\x05image\x18\x07 \x01(\x0b\x32\x0f.kes.ImageValueH\x00\x12(\n\tlocations\x18\x08 \x01(\x0b\x32\x13.kes.LocationValuesH\x00\x42\x07\n\x05value\" \n\x0cNumberValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x01\" \n\x0cStringValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t\"%\n\x11\x45numerationValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\x05\"&\n\x12RelationshipValues\x12\x10\n\x08\x65lements\x18\x01 \x03(\t\";\n\nImageValue\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08\x66ileName\x18\x02 \x01(\t\x12\x0f\n\x07tempKey\x18\x03 \x01(\t\"6\n\x0eLocationValues\x12$\n\x08\x65lements\x18\x01 \x03(\x0b\x32\x12.kes.LocationPoint\"S\n\rLocationPoint\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08latitude\x18\x02 \x01(\x01\x12\x11\n\tlongitude\x18\x03 \x01(\x01\x12\x0f\n\x07\x61\x64\x64ress\x18\x04 \x01(\t\":\n\x10LoadImageRequest\x12\x14\n\x0cimageValueId\x18\x01 \x01(\t\x12\x10\n\x08\x66ileName\x18\x02 \x01(\t\"\x1f\n\x0eLoadImageReply\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\"!\n\x10SaveImageRequest\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\"!\n\x0eSaveImageReply\x12\x0f\n\x07tempKey\x18\x01 \x01(\t2\xab\x02\n\x05Table\x12\x35\n\treadTable\x12\x15.kes.ReadTableRequest\x1a\x0f.kes.TableReply\"\x00\x12\x33\n\x07\x61\x64\x64Rows\x12\x13.kes.AddRowsRequest\x1a\x11.kes.AddRowsReply\"\x00\x12<\n\ndeleteRows\x12\x16.kes.DeleteRowsRequest\x1a\x14.kes.DeleteRowsReply\"\x00\x12;\n\tloadImage\x12\x15.kes.LoadImageRequest\x1a\x13.kes.LoadImageReply\"\x00\x30\x01\x12;\n\tsaveImage\x12\x15.kes.SaveImageRequest\x1a\x13.kes.SaveImageReply\"\x00(\x01\x42\x0cZ\nkes/tablesb\x06proto3')
 
 
 
@@ -35,6 +35,8 @@ _LOCATIONVALUES = DESCRIPTOR.message_types_by_name['LocationValues']
 _LOCATIONPOINT = DESCRIPTOR.message_types_by_name['LocationPoint']
 _LOADIMAGEREQUEST = DESCRIPTOR.message_types_by_name['LoadImageRequest']
 _LOADIMAGEREPLY = DESCRIPTOR.message_types_by_name['LoadImageReply']
+_SAVEIMAGEREQUEST = DESCRIPTOR.message_types_by_name['SaveImageRequest']
+_SAVEIMAGEREPLY = DESCRIPTOR.message_types_by_name['SaveImageReply']
 ReadTableRequest = _reflection.GeneratedProtocolMessageType('ReadTableRequest', (_message.Message,), {
   'DESCRIPTOR' : _READTABLEREQUEST,
   '__module__' : 'table_pb2'
@@ -154,6 +156,20 @@ LoadImageReply = _reflection.GeneratedProtocolMessageType('LoadImageReply', (_me
   })
 _sym_db.RegisterMessage(LoadImageReply)
 
+SaveImageRequest = _reflection.GeneratedProtocolMessageType('SaveImageRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SAVEIMAGEREQUEST,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.SaveImageRequest)
+  })
+_sym_db.RegisterMessage(SaveImageRequest)
+
+SaveImageReply = _reflection.GeneratedProtocolMessageType('SaveImageReply', (_message.Message,), {
+  'DESCRIPTOR' : _SAVEIMAGEREPLY,
+  '__module__' : 'table_pb2'
+  # @@protoc_insertion_point(class_scope:kes.SaveImageReply)
+  })
+_sym_db.RegisterMessage(SaveImageReply)
+
 _TABLE = DESCRIPTOR.services_by_name['Table']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
@@ -184,15 +200,19 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _RELATIONSHIPVALUES._serialized_start=760
   _RELATIONSHIPVALUES._serialized_end=798
   _IMAGEVALUE._serialized_start=800
-  _IMAGEVALUE._serialized_end=857
-  _LOCATIONVALUES._serialized_start=859
-  _LOCATIONVALUES._serialized_end=913
-  _LOCATIONPOINT._serialized_start=915
-  _LOCATIONPOINT._serialized_end=998
-  _LOADIMAGEREQUEST._serialized_start=1000
-  _LOADIMAGEREQUEST._serialized_end=1058
-  _LOADIMAGEREPLY._serialized_start=1060
-  _LOADIMAGEREPLY._serialized_end=1091
-  _TABLE._serialized_start=1094
-  _TABLE._serialized_end=1330
+  _IMAGEVALUE._serialized_end=859
+  _LOCATIONVALUES._serialized_start=861
+  _LOCATIONVALUES._serialized_end=915
+  _LOCATIONPOINT._serialized_start=917
+  _LOCATIONPOINT._serialized_end=1000
+  _LOADIMAGEREQUEST._serialized_start=1002
+  _LOADIMAGEREQUEST._serialized_end=1060
+  _LOADIMAGEREPLY._serialized_start=1062
+  _LOADIMAGEREPLY._serialized_end=1093
+  _SAVEIMAGEREQUEST._serialized_start=1095
+  _SAVEIMAGEREQUEST._serialized_end=1128
+  _SAVEIMAGEREPLY._serialized_start=1130
+  _SAVEIMAGEREPLY._serialized_end=1163
+  _TABLE._serialized_start=1166
+  _TABLE._serialized_end=1465
 # @@protoc_insertion_point(module_scope)

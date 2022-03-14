@@ -5,6 +5,7 @@ isort:skip_file
 import abc
 import grpc
 import table_pb2
+import typing
 
 class TableStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
@@ -20,9 +21,13 @@ class TableStub:
         table_pb2.DeleteRowsRequest,
         table_pb2.DeleteRowsReply]
 
-    loadImage: grpc.UnaryUnaryMultiCallable[
+    loadImage: grpc.UnaryStreamMultiCallable[
         table_pb2.LoadImageRequest,
         table_pb2.LoadImageReply]
+
+    saveImage: grpc.StreamUnaryMultiCallable[
+        table_pb2.SaveImageRequest,
+        table_pb2.SaveImageReply]
 
 
 class TableServicer(metaclass=abc.ABCMeta):
@@ -48,7 +53,13 @@ class TableServicer(metaclass=abc.ABCMeta):
     def loadImage(self,
         request: table_pb2.LoadImageRequest,
         context: grpc.ServicerContext,
-    ) -> table_pb2.LoadImageReply: ...
+    ) -> typing.Iterator[table_pb2.LoadImageReply]: ...
+
+    @abc.abstractmethod
+    def saveImage(self,
+        request_iterator: typing.Iterator[table_pb2.SaveImageRequest],
+        context: grpc.ServicerContext,
+    ) -> table_pb2.SaveImageReply: ...
 
 
 def add_TableServicer_to_server(servicer: TableServicer, server: grpc.Server) -> None: ...

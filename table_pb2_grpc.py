@@ -29,10 +29,15 @@ class TableStub(object):
                 request_serializer=table__pb2.DeleteRowsRequest.SerializeToString,
                 response_deserializer=table__pb2.DeleteRowsReply.FromString,
                 )
-        self.loadImage = channel.unary_unary(
+        self.loadImage = channel.unary_stream(
                 '/kes.Table/loadImage',
                 request_serializer=table__pb2.LoadImageRequest.SerializeToString,
                 response_deserializer=table__pb2.LoadImageReply.FromString,
+                )
+        self.saveImage = channel.stream_unary(
+                '/kes.Table/saveImage',
+                request_serializer=table__pb2.SaveImageRequest.SerializeToString,
+                response_deserializer=table__pb2.SaveImageReply.FromString,
                 )
 
 
@@ -63,6 +68,12 @@ class TableServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def saveImage(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TableServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -81,10 +92,15 @@ def add_TableServicer_to_server(servicer, server):
                     request_deserializer=table__pb2.DeleteRowsRequest.FromString,
                     response_serializer=table__pb2.DeleteRowsReply.SerializeToString,
             ),
-            'loadImage': grpc.unary_unary_rpc_method_handler(
+            'loadImage': grpc.unary_stream_rpc_method_handler(
                     servicer.loadImage,
                     request_deserializer=table__pb2.LoadImageRequest.FromString,
                     response_serializer=table__pb2.LoadImageReply.SerializeToString,
+            ),
+            'saveImage': grpc.stream_unary_rpc_method_handler(
+                    servicer.saveImage,
+                    request_deserializer=table__pb2.SaveImageRequest.FromString,
+                    response_serializer=table__pb2.SaveImageReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -158,8 +174,25 @@ class Table(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/kes.Table/loadImage',
+        return grpc.experimental.unary_stream(request, target, '/kes.Table/loadImage',
             table__pb2.LoadImageRequest.SerializeToString,
             table__pb2.LoadImageReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def saveImage(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_unary(request_iterator, target, '/kes.Table/saveImage',
+            table__pb2.SaveImageRequest.SerializeToString,
+            table__pb2.SaveImageReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

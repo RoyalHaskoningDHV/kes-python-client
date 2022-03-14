@@ -7,17 +7,17 @@ from kes import ImageField, LocationField, RowReference, Table
 
 @dataclass
 class TestCategoryTestAssetRow:
-    string_test_property: Optional[str] = None
-    decimal_test_property: Optional[float] = None
     _image_property: ImageField = field(default_factory=lambda: ImageField(
-        UUID("44e5526c-faac-44c2-9eb0-bff829cff556")), init=False)
+        UUID("dac71806-0c7d-4048-8328-df1678bdac7d")), init=False)
 
     @property
     def image_property(self):
         return self._image_property
 
+    string_test_property: Optional[str] = None
+    decimal_test_property: Optional[float] = None
     _location_property: LocationField = field(default_factory=lambda: LocationField(
-        UUID("0d98518d-97c7-4c38-b37d-2bf41264efd3")), init=False)
+        UUID("11dcdad3-8883-4849-859e-21af94eca03e")), init=False)
 
     @property
     def location_property(self):
@@ -26,12 +26,12 @@ class TestCategoryTestAssetRow:
 
 
 test_category_test_asset_row_property_map = {
-    "string_test_property": UUID("45fbf341-e574-4bb2-b334-e03823f44e9b"),
-    "decimal_test_property": UUID("320e84e5-b200-4c02-b8ed-df61d7438de0"),
-    "image_property": UUID("44e5526c-faac-44c2-9eb0-bff829cff556"),
-    "location_property": UUID("0d98518d-97c7-4c38-b37d-2bf41264efd3")
+    "image_property": UUID("dac71806-0c7d-4048-8328-df1678bdac7d"),
+    "string_test_property": UUID("ac0c9375-f925-49a3-94b5-4331249c9fc2"),
+    "decimal_test_property": UUID("3ef0add5-81dc-4f5f-a85b-2a4792e5075a"),
+    "location_property": UUID("11dcdad3-8883-4849-859e-21af94eca03e")
 }
 
 test_category_test_asset_table = Table[TestCategoryTestAssetRow](
-    UUID("8032e814-c705-4974-a3c1-e45622283e05"), test_category_test_asset_row_property_map
+    UUID("8f13751f-d671-4516-bae4-bd49a59719f2"), test_category_test_asset_row_property_map
 )

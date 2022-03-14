@@ -118,9 +118,7 @@ class Field(google.protobuf.message.Message):
     @property
     def rowReferences(self) -> global___RelationshipValues: ...
     @property
-    def image(self) -> global___ImageValue:
-        """ImageValues images = 7"""
-        pass
+    def image(self) -> global___ImageValue: ...
     @property
     def locations(self) -> global___LocationValues: ...
     def __init__(self,
@@ -191,30 +189,20 @@ class ImageValue(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
     ID_FIELD_NUMBER: builtins.int
     FILENAME_FIELD_NUMBER: builtins.int
-    CHUNK_FIELD_NUMBER: builtins.int
+    TEMPKEY_FIELD_NUMBER: builtins.int
     id: typing.Text
     fileName: typing.Text
-    chunk: builtins.bytes
+    tempKey: typing.Text
     def __init__(self,
         *,
         id: typing.Text = ...,
         fileName: typing.Text = ...,
-        chunk: builtins.bytes = ...,
+        tempKey: typing.Text = ...,
         ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["chunk",b"chunk","fileName",b"fileName","id",b"id"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["fileName",b"fileName","id",b"id","tempKey",b"tempKey"]) -> None: ...
 global___ImageValue = ImageValue
 
 class LocationValues(google.protobuf.message.Message):
-    """message ImageValues {
-     repeated Image elements = 1;
-    }
-
-    message Image {
-     string fileName = 1;
-     bytes chunk = 2;
-    }
-
-    """
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
     ELEMENTS_FIELD_NUMBER: builtins.int
     @property
@@ -270,3 +258,25 @@ class LoadImageReply(google.protobuf.message.Message):
         ) -> None: ...
     def ClearField(self, field_name: typing_extensions.Literal["chunk",b"chunk"]) -> None: ...
 global___LoadImageReply = LoadImageReply
+
+class SaveImageRequest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    CHUNK_FIELD_NUMBER: builtins.int
+    chunk: builtins.bytes
+    def __init__(self,
+        *,
+        chunk: builtins.bytes = ...,
+        ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["chunk",b"chunk"]) -> None: ...
+global___SaveImageRequest = SaveImageRequest
+
+class SaveImageReply(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    TEMPKEY_FIELD_NUMBER: builtins.int
+    tempKey: typing.Text
+    def __init__(self,
+        *,
+        tempKey: typing.Text = ...,
+        ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["tempKey",b"tempKey"]) -> None: ...
+global___SaveImageReply = SaveImageReply

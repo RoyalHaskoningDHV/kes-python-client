@@ -13,13 +13,14 @@ from uuid import UUID, uuid4
 
 import grpc
 
-from table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply, LoadImageReply, \
-    LoadImageRequest, LocationPoint
+from table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply, LoadImageRequest, LocationPoint, \
+    SaveImageRequest, SaveImageReply
 from table_pb2_grpc import *
 
-INSPECTION_ID = "aba69bae-6500-4731-bb08-5bcac87f6442"
+INSPECTION_ID = "b5fb4596-9363-41b9-9160-aa7f22c40990"
 
 RowType = TypeVar('RowType')
+chunkSize = 60 * 1024  # 64 KiB
 
 
 @dataclass
@@ -122,7 +123,7 @@ class Table(Generic[RowType]):
                     field.strings.elements.append(textValue)
                 case ImageField() as imageValue:
                     field.image.fileName = imageValue.name
-                    field.image.chunk = imageValue.file
+                    field.image.tempKey = imageValue._temp_key
                 case LocationField() as locationValue:
                     for point in locationValue._points:
                         locPoint = LocationPoint(name=point.name, latitude=point.latitude,
@@ -179,7 +180,7 @@ class Table(Generic[RowType]):
                         imageField = ImageField(property_id=field.propertyId)
                         imageField.name = field.image.fileName
                         imageField._image_value_id = field.image.id
-                        setattr(localRow, "_" + attributeName, imageField)  # TODO check how to setattr fieldImage
+                        setattr(localRow, "_" + attributeName, imageField)
                     case "locations":
                         locationField = LocationField(property_id=field.propertyId)
                         for point in field.locations.elements:
@@ -205,6 +206,7 @@ class ImageField:
     _image_value_id: UUID
     file: bytes
     name: str
+    _temp_key: str
 
     def __init__(self, property_id: UUID):
         """
@@ -214,19 +216,34 @@ class ImageField:
            property_id (UUID): Id of the image property corresponding to this field
         """
         self._property_id = property_id
+        self._image_value_id = None
+        self.name = ""
+        self.file = None
+        self._temp_key = None
 
     def loadImage(self):
         """ Loads an image and returns it as a binary stream if present """
-        reply: LoadImageReply = stub.loadImage(LoadImageRequest(
+        chunks = []
+        streamingReply = stub.loadImage(LoadImageRequest(
             imageValueId=str(self._image_value_id), fileName=self.name
         ))
-        self.file = reply.chunk
+        for reply in streamingReply:
+            chunks.append(reply.chunk)
+
+        self.file = b''.join(chunks)
         return self.file
 
     def saveImage(self, name: str, image: bytes):
         """ Writes the given binary stream as the image of this field  """
         self.file = image
         self.name = name
+        response: SaveImageReply = stub.saveImage(createChunkStreams(image))
+        self._temp_key = response.tempKey
+
+
+def createChunkStreams(image: bytes):
+    for i in range(0, len(image), chunkSize):
+        yield SaveImageRequest(chunk=image[i:i + chunkSize])
 
 
 class LocationField:
