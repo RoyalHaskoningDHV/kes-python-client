@@ -9,7 +9,7 @@ asset = TestCategoryTestAssetRow(string_test_property="Test String Python",
                                  decimal_test_property=9.999,
                                  )
 f = open("image.png", "rb")
-asset.image_property.saveImage(f.name, f.read())
+asset.image_property.save(f.name, f.read())
 
 geocoder = MapBox(api_key=os.environ.get('REACT_APP_MAPBOX_TOKEN'))
 location1: Location = geocoder.reverse(query=(52.057557132353644, 4.949373509877396))
@@ -26,7 +26,7 @@ test_category_test_asset_table.load()
 
 
 # Downloaded image
-downloadedImage = test_category_test_asset_table[0].image_property.loadImage()
+downloadedImage = test_category_test_asset_table[0].image_property.load()
 with open("downloaded Pingu.jpeg", "wb") as binary_file:
 
     # Write bytes to file
