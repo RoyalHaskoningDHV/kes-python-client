@@ -1,4 +1,5 @@
 
+from dataclasses import dataclass
 from functools import cached_property
 from typing import Collection
 from uuid import UUID
@@ -8,6 +9,11 @@ from kes.table import RowType, Table, TableDef
 from kes.proto.project_pb2 import ReadActivitiesReply, ReadActivitiesRequest
 from kes.proto.project_pb2_grpc import ProjectStub
 from kes.proto.table_pb2_grpc import TableStub
+
+
+@dataclass
+class SessionConfig:
+    kes_service_address: str
 
 
 class Activity:
@@ -40,9 +46,9 @@ class Project:
     _table_stub: TableStub
     _project_stub: ProjectStub
 
-    def __init__(self, project_id: UUID):
+    def __init__(self, config: SessionConfig, project_id: UUID):
         self._project_id = project_id
-        self._channel = grpc.insecure_channel('localhost:50051')
+        self._channel = grpc.insecure_channel(config.kes_service_address)
         self._table_stub = TableStub(self._channel)
         self._project_stub = ProjectStub(self._channel)
         self._inspections = None
