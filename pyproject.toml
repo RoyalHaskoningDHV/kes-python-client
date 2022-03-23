@@ -1,3 +1,7 @@
 [tool.autopep8]
 max_line_length = 120
 ignore="E402"
+
+[build-system]
+requires = ["setuptools>=42", "grpcio-tools", "mypy-protobuf"]
+build-backend = "setuptools.build_meta"

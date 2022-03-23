@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import ByteString, Optional
 from uuid import UUID
 
-from proto.table_pb2_grpc import TableStub
-from proto.table_pb2 import LoadImageRequest, SaveImageReply, SaveImageRequest
+from kes.proto.table_pb2_grpc import TableStub
+from kes.proto.table_pb2 import LoadImageRequest, SaveImageReply, SaveImageRequest
 
 
 class ImageUndefined(Exception):

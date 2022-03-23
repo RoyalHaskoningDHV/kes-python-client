@@ -4,10 +4,10 @@ from typing import Collection
 from uuid import UUID
 
 import grpc
-from kes import RowType, Table, TableDef
-from proto.project_pb2 import ReadActivitiesReply, ReadActivitiesRequest
-from proto.project_pb2_grpc import ProjectStub
-from proto.table_pb2_grpc import TableStub
+from kes.table import RowType, Table, TableDef
+from kes.proto.project_pb2 import ReadActivitiesReply, ReadActivitiesRequest
+from kes.proto.project_pb2_grpc import ProjectStub
+from kes.proto.table_pb2_grpc import TableStub
 
 
 class Activity:

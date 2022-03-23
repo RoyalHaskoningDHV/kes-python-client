@@ -1,3 +1,5 @@
 .vscode
 __pycache__
 typings
+dist
+src/kes_package_RHDHV.egg-info

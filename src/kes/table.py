@@ -8,13 +8,13 @@ import uuid
 from dataclasses import dataclass
 from typing import Generator, List, Generic, Mapping, Type, TypeVar
 from uuid import UUID, uuid4
-
 import grpc
-from fields.imagefield import ImageField
-from fields.serialize import deserializeField, serializeField
 
-from proto.table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply
-from proto.table_pb2_grpc import TableStub
+from kes.fields.imagefield import ImageField
+from kes.fields.serialize import deserializeField, serializeField
+
+from kes.proto.table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply
+from kes.proto.table_pb2_grpc import TableStub
 
 RowType = TypeVar('RowType')
 

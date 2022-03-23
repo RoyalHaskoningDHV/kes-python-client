@@ -2,9 +2,9 @@ from enum import Flag
 from functools import reduce
 from typing import Any
 from uuid import UUID
-from imagefield import ImageField
-from locationfield import LocationField
-from proto.table_pb2 import LocationPoint, Field as pb_Field
+from kes.fields.imagefield import ImageField
+from kes.fields.locationfield import LocationField
+from kes.proto.table_pb2 import LocationPoint, Field as pb_Field
 
 
 def serializeField(pb_field: pb_Field, property_id: UUID, field: Any):
