@@ -10,12 +10,6 @@ from kes.proto.project_pb2 import ReadActivitiesReply, ReadActivitiesRequest
 from kes.proto.project_pb2_grpc import ProjectStub
 from kes.proto.table_pb2_grpc import TableStub
 
-
-@dataclass
-class SessionConfig:
-    kes_service_address: str
-
-
 class Activity:
     _id: UUID
     _description: str
@@ -42,19 +36,17 @@ class Activity:
 
 class Project:
     _project_id: UUID
-    _channel: grpc.Channel
     _table_stub: TableStub
     _project_stub: ProjectStub
 
-    def __init__(self, config: SessionConfig, project_id: UUID):
+    def __init__(self, project_id: UUID, table_stub: TableStub, project_stub: ProjectStub):
         self._project_id = project_id
-        self._channel = grpc.insecure_channel(config.kes_service_address)
-        self._table_stub = TableStub(self._channel)
-        self._project_stub = ProjectStub(self._channel)
+        self._table_stub = table_stub
+        self._project_stub = project_stub
         self._inspections = None
 
     @cached_property
-    def inspections(self) -> Collection[Activity]:
+    def activities(self) -> Collection[Activity]:
         request = ReadActivitiesRequest(projectId=str(self._project_id))
         reply: ReadActivitiesReply = self._project_stub.readActivities(request)
 
