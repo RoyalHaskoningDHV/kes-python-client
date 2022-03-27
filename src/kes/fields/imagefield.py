@@ -61,6 +61,9 @@ class ImageField:
             chunk = image[i: i + self.__chunkSize]
             yield SaveImageRequest(chunk=chunk)
 
+    def isEmpty(self) -> bool:
+        return self._ref is None
+
     @property
     def name(self):
         if self._ref != None:

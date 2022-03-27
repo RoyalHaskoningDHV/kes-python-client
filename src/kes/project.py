@@ -1,14 +1,13 @@
 
-from dataclasses import dataclass
 from functools import cached_property
-from typing import Collection
+from typing import List
 from uuid import UUID
 
-import grpc
 from kes.table import RowType, Table, TableDef
 from kes.proto.project_pb2 import ReadActivitiesReply, ReadActivitiesRequest
 from kes.proto.project_pb2_grpc import ProjectStub
 from kes.proto.table_pb2_grpc import TableStub
+
 
 class Activity:
     _id: UUID
@@ -33,6 +32,10 @@ class Activity:
     def id(self):
         return self._id
 
+    @property
+    def description(self):
+        return self._description
+
 
 class Project:
     _project_id: UUID
@@ -46,11 +49,11 @@ class Project:
         self._inspections = None
 
     @cached_property
-    def activities(self) -> Collection[Activity]:
+    def activities(self) -> List[Activity]:
         request = ReadActivitiesRequest(projectId=str(self._project_id))
         reply: ReadActivitiesReply = self._project_stub.readActivities(request)
 
-        activities: Collection[Activity] = []
+        activities: List[Activity] = []
         for pb_activity in reply.activities:
             activity = Activity(self._table_stub, UUID(pb_activity.id), pb_activity.description)
             activities.append(activity)

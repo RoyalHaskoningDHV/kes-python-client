@@ -3,18 +3,22 @@
 Classes:
     Table: Rows represent assets and columns properties.
 """
+from enum import Flag
+from functools import reduce
 import logging
 import uuid
 from dataclasses import dataclass
-from typing import Generator, List, Generic, Mapping, Type, TypeVar
+from typing import Any, Generator, List, Generic, Mapping, Type, TypeVar
 from uuid import UUID, uuid4
+from xmlrpc.client import Boolean
 import grpc
 
 from kes.fields.imagefield import ImageField
-from kes.fields.serialize import deserializeField, serializeField
 
-from kes.proto.table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply
+from kes.proto.table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply, LocationPoint, Field as pb_Field
 from kes.proto.table_pb2_grpc import TableStub
+
+from kes.fields.locationfield import LocationField
 
 RowType = TypeVar('RowType')
 
@@ -40,6 +44,22 @@ class TableFull(Exception):
     ...
 
 
+@dataclass
+class FieldDef:
+    propertyId: UUID
+    flag_constructor: Type[Flag] | None
+
+
+PropertyMap = Mapping[str, FieldDef]
+
+
+@dataclass
+class TableDef(Generic[RowType]):
+    row_type: Type[RowType]
+    asset_type_id: UUID
+    property_map: PropertyMap
+
+
 class Table(Generic[RowType]):
     """
     This class acts as a container for rows.
@@ -54,10 +74,10 @@ class Table(Generic[RowType]):
     _row_type: Type[RowType]
     _asset_type_id: UUID
     _rows: List[RowElement[RowType]]
-    _property_map: Mapping[str, UUID]
-    _rev_property_map: Mapping[UUID, str]
+    _property_map: PropertyMap
+    _rev_property_map: Mapping[UUID, tuple[str, Type[Flag] | None]]
 
-    def __init__(self, stub: TableStub, inspection_id: UUID, row_type: Type[RowType], asset_type_id: UUID, property_map: Mapping[str, UUID]):
+    def __init__(self, stub: TableStub, inspection_id: UUID, row_type: Type[RowType], asset_type_id: UUID, property_map: PropertyMap):
         """
         The constructor for Table class.
         Tables are usually created using the :py:meth:Activity.build_table
@@ -74,7 +94,7 @@ class Table(Generic[RowType]):
         self._asset_type_id = asset_type_id
         self._rows = []
         self._property_map = property_map
-        self._rev_property_map = {v: k for k, v in property_map.items()}
+        self._rev_property_map = {v.propertyId: (k, v.flag_constructor) for k, v in property_map.items()}
 
     def __len__(self):
         return len(self._rows)
@@ -113,10 +133,13 @@ class Table(Generic[RowType]):
         asset_id = uuid4()
         row.assetId = str(asset_id)
 
-        for fieldName, propertyId in self._property_map.items():
+        for fieldName, fieldDef in self._property_map.items():
             pb_field = row.fields.add()
+            pb_field.propertyId = str(fieldDef.propertyId)
             field = getattr(value, fieldName)
-            serializeField(pb_field, propertyId, field)
+            if self._fieldIsEmpty(field):
+                continue
+            self._serializeField(field, pb_field)
         try:
             self._stub.addRows(request)
         except grpc.RpcError as e:
@@ -141,12 +164,12 @@ class Table(Generic[RowType]):
             localRow: RowType = self._row_type()
 
             for field in row.fields:
-                attribute_name = self._rev_property_map.get(UUID(field.propertyId))
-                if (attribute_name is None):
+                revFieldDef = self._rev_property_map.get(UUID(field.propertyId))
+                if (revFieldDef is None):
                     logging.warning(
                         'Field with property id %s not found', field.propertyId)
                     continue
-                deserializeField(row, attribute_name, field)
+                self._deserializeField(localRow, *revFieldDef, field)
 
             self._rows.append(RowElement[RowType](
                 localRow, uuid.UUID(row.assetId)))
@@ -157,9 +180,71 @@ class Table(Generic[RowType]):
     def loadImage(self, image: ImageField):
         return image.load(self._stub)
 
+    def _fieldIsEmpty(self, field: Any) -> bool:
+        if self is None:
+            return True
 
-@dataclass
-class TableDef(Generic[RowType]):
-    row_type: Type[RowType]
-    asset_type_id: UUID
-    property_map: Mapping[str, UUID]
+        if isinstance(field, ImageField):
+            return field.isEmpty()
+
+        return False
+
+    def _serializeField(self, field: Any, pb_field: pb_Field):
+        match field:
+            case float(floatValue):
+                pb_field.numbers.elements.append(floatValue)
+            case str(textValue):
+                pb_field.strings.elements.append(textValue)
+            case ImageField() as imageValue:
+                if imageValue.key != None:
+                    pb_field.image.fileName = imageValue.name
+                    pb_field.image.tempKey = imageValue.key
+                else:
+                    del pb_field
+            case LocationField() as locationValue:
+                for point in locationValue:
+                    locPoint = LocationPoint(name=point.name, latitude=point.latitude,
+                                             longitude=point.longitude, address=point.address)
+                    pb_field.locations.elements.append(locPoint)
+            case [firstNumber, *rest] if isinstance(firstNumber, float):
+                pb_field.numbers.elements[:] = [firstNumber, *rest]
+            case [firstString, *rest] if type(firstString) == str:
+                pb_field.strings.elements[:] = [firstString, *rest]
+            case Flag() as flag:
+                for i, c in enumerate(bin(flag.value)[:1:-1], 1):
+                    if c == '1':
+                        pb_field.members.elements.append(i)
+            case _:
+                pass
+
+    def _deserializeField(self, row: Any, attribute_name: str, flag_type: Type[Flag] | None, pb_field: pb_Field):
+        match pb_field.WhichOneof("value"):
+            case "numbers" if pb_field.multi:
+                setattr(row, attribute_name,
+                        pb_field.numbers.elements)
+            case "numbers":
+                value = next(iter(pb_field.numbers.elements), None)
+                setattr(row, attribute_name, value)
+            case "strings" if pb_field.multi:
+                setattr(row, attribute_name,
+                        pb_field.strings.elements)
+            case "strings":
+                value = next(iter(pb_field.strings.elements), None)
+                setattr(row, attribute_name, value)
+            case "image":
+                imageRef = ImageField.ImageRef(pb_field.image.fileName, UUID(pb_field.image.id))
+                imageField = ImageField(property_id=UUID(pb_field.propertyId), imageRef=imageRef)
+                setattr(row, "_" + attribute_name, imageField)
+            case "locations":
+                locationField = LocationField(property_id=UUID(pb_field.propertyId))
+                for point in pb_field.locations.elements:
+                    locationField.addPoint(point.name, point.latitude, point.longitude, point.address)
+                setattr(row, "_" + attribute_name, locationField)
+            case "members":
+                if flag_type is None:
+                    raise LookupError("Flag type not set")
+                flagValue = reduce(lambda r, m: r | 2**(m - 1),
+                                   pb_field.members.elements, 0)
+                setattr(row, attribute_name, flag_type(flagValue))
+            case _:
+                pass
