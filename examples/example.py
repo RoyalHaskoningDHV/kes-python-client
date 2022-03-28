@@ -1,10 +1,10 @@
 from library import CategoryAssetRow, Multipleselect, Singleselect
-from kes.client import Client, ClientConfig
+from kes.client import Client, Config
 from library import category_asset_table_def
 import os
 
 # Initialize client
-config = ClientConfig(kes_service_address='localhost:50051')
+config = Config(kes_service_address='localhost:50051')
 client = Client(config)
 
 # Lookup project
