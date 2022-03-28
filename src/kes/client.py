@@ -44,7 +44,7 @@ class Config:
 class Client:
     """Kes client.
 
-    Starting point of a kes script. After creating a client instance, kes projects can be opened using openProject.
+    Starting point of a kes script. After creating a client instance, kes projects can be opened using open_project.
     """
 
     _channel: grpc.Channel
@@ -75,7 +75,7 @@ class Client:
             ProjectNotFound: The requested project could not be found.
         """
 
-    def openProject(self, project_name: str) -> Project:
+    def open_project(self, project_name: str) -> Project:
         try:
             request = LookupProjectRequest(projectName=project_name)
             reply = self._project_stub.lookupProject(request)

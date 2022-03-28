@@ -8,7 +8,7 @@ config = Config(kes_service_address='localhost:50051')
 client = Client(config)
 
 # Lookup project
-project = client.openProject("Preview Python client example")
+project = client.open_project("Preview Python client example")
 
 # Create a table
 activity = project.activities[0]
