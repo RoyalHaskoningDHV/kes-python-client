@@ -1,16 +1,20 @@
-"""This module offers client functionality for accessing assets and properties through the abstraction provided by the table class.
+""" Table module.
+
+This module offers functionality for accessing assets and properties through the abstraction provided by the table class.
 
 Classes:
     Table: Rows represent assets and columns properties.
+    RowReference: Reference which can be assigned to relationship fields.
+    FieldDef: Definition of a field.
+    TableDef: Definition of a table.
 """
 from enum import Flag
 from functools import reduce
 import logging
 import uuid
 from dataclasses import dataclass
-from typing import Any, Generator, List, Generic, Mapping, Type, TypeVar
+from typing import Any, ByteString, Generator, List, Generic, Mapping, Type, TypeVar
 from uuid import UUID, uuid4
-from xmlrpc.client import Boolean
 import grpc
 
 from kes.fields.imagefield import ImageField
@@ -25,7 +29,7 @@ RowType = TypeVar('RowType')
 
 @dataclass
 class RowElement(Generic[RowType]):
-    """ Associates a row with an asset """
+    """ Internal """
     row: RowType
     asset_id: UUID
 
@@ -41,13 +45,21 @@ class RowReference(Generic[ParticipantType]):
 
 
 class TableFull(Exception):
+    """ Exception indication when a row could not be inserted
+    because the table is full."""
     ...
 
 
 @dataclass
 class FieldDef:
-    propertyId: UUID
-    flag_constructor: Type[Flag] | None
+    """ Defines a field
+
+    Attributes:
+        property_id: Id of the property corresponsing with the field
+        flag_constructor: Holds the type of the flag field if applicable.
+    """
+    property_id: UUID
+    flag_type: Type[Flag] | None
 
 
 PropertyMap = Mapping[str, FieldDef]
@@ -62,8 +74,16 @@ class TableDef(Generic[RowType]):
 
 class Table(Generic[RowType]):
     """
+    Tables are the primary abstraction for manipulating Kes activities.
     This class acts as a container for rows.
-    Each instance maps to a asset type, with rows corresponding to assets.
+    A table corresponds to a asset type, with rows corresponding to assets.
+
+    Operations such as adding rows and deleting rows are executed immediately.
+    For example, after executing append_row, the corresponding asset is immediately
+    visible in Kes.
+
+    Note that modifying a row is not yet supported. To work around this, delete the
+    row and reinsert it.
 
     Type parameters:
         RowType: The type of rows hold by this class.
@@ -78,15 +98,7 @@ class Table(Generic[RowType]):
     _rev_property_map: Mapping[UUID, tuple[str, Type[Flag] | None]]
 
     def __init__(self, stub: TableStub, inspection_id: UUID, row_type: Type[RowType], asset_type_id: UUID, property_map: PropertyMap):
-        """
-        The constructor for Table class.
-        Tables are usually created using the :py:meth:Activity.build_table
-
-        Parameters:
-           inspection_id (UUID): Id of the inspection from which the table is read and written to.
-           asset_type_id (UUID): Id of the asset type corresponding with this table.
-           property_map (Mapping[str, UUID]): Mapping of all field of row of this table to property ids.
-        """
+        """Typically not directly invoked."""
 
         self._stub = stub
         self._inspection_id = inspection_id
@@ -94,7 +106,7 @@ class Table(Generic[RowType]):
         self._asset_type_id = asset_type_id
         self._rows = []
         self._property_map = property_map
-        self._rev_property_map = {v.propertyId: (k, v.flag_constructor) for k, v in property_map.items()}
+        self._rev_property_map = {v.property_id: (k, v.flag_type) for k, v in property_map.items()}
 
     def __len__(self):
         return len(self._rows)
@@ -121,8 +133,18 @@ class Table(Generic[RowType]):
     def __reversed__(self) -> Generator[RowType, None, None]:
         return (rowElem.row for rowElem in reversed(self._rows))
 
-    def appendRow(self, value: RowType):
-        """ Adds the row to the end of the table. Returns a row reference. """
+    def append_row(self, value: RowType):
+        """Adds the row to the end of the table.
+
+        Args:
+            value (RowType): the row to insert.
+
+        Returns: A row reference which can be assigned to relationship fields.
+
+        Raises:
+            TableFull: Indicates table cannot hold any more rows.
+
+        """
         if not isinstance(value, self._row_type):
             raise TypeError
 
@@ -135,11 +157,11 @@ class Table(Generic[RowType]):
 
         for fieldName, fieldDef in self._property_map.items():
             pb_field = row.fields.add()
-            pb_field.propertyId = str(fieldDef.propertyId)
+            pb_field.propertyId = str(fieldDef.property_id)
             field = getattr(value, fieldName)
-            if self._fieldIsEmpty(field):
+            if self._field_is_empty(field):
                 continue
-            self._serializeField(field, pb_field)
+            self._serialize_field(field, pb_field)
         try:
             self._stub.addRows(request)
         except grpc.RpcError as e:
@@ -151,12 +173,21 @@ class Table(Generic[RowType]):
         self._rows.append(RowElement[RowType](value, asset_id))
         return RowReference[RowType](self._asset_type_id, asset_id)
 
-    def getReferenceByRowIndex(self, rowIndex: int):
-        """ Get a reference to the specified row """
+    def get_reference_by_row_index(self, rowIndex: int):
+        """Get a reference to the specified row.
+
+            Args:
+                rowIndex (int): Index of row to get a reference to.
+        """
         asset_id = self._rows[rowIndex].asset_id
         return RowReference[RowType](self._asset_type_id, asset_id)
 
     def load(self):
+        """Load the rows of this table.
+
+        After instantiating a table, it is empty. Call this method to load assets from the Kes activity.
+        """
+
         reply: TableReply = self._stub.readTable(ReadTableRequest(
             inspectionId=str(self._inspection_id), assetTypeId=str(self._asset_type_id)
         ))
@@ -169,18 +200,30 @@ class Table(Generic[RowType]):
                     logging.warning(
                         'Field with property id %s not found', field.propertyId)
                     continue
-                self._deserializeField(localRow, *revFieldDef, field)
+                self._deserialize_field(localRow, *revFieldDef, field)
 
             self._rows.append(RowElement[RowType](
                 localRow, uuid.UUID(row.assetId)))
 
-    def saveImage(self, image: ImageField, name: str, data: bytes):
+    def save_image(self, image: ImageField, name: str, data: bytes):
+        """Save image data and associated name to an image field.
+
+        Args:
+            image (ImageField): Image field to write to.
+            name (str): The name of the image as visible in Kes.
+            data (bytes): Contents of the image file.
+        """
         image.save(self._stub, name, data)
 
-    def loadImage(self, image: ImageField):
+    def load_image(self, image: ImageField) -> ByteString:
+        """Load image data.
+
+        Args:
+            image (ImageField): The image whose data to read.
+        """
         return image.load(self._stub)
 
-    def _fieldIsEmpty(self, field: Any) -> bool:
+    def _field_is_empty(self, field: Any) -> bool:
         if self is None:
             return True
 
@@ -189,7 +232,7 @@ class Table(Generic[RowType]):
 
         return False
 
-    def _serializeField(self, field: Any, pb_field: pb_Field):
+    def _serialize_field(self, field: Any, pb_field: pb_Field):
         match field:
             case float(floatValue):
                 pb_field.numbers.elements.append(floatValue)
@@ -217,7 +260,7 @@ class Table(Generic[RowType]):
             case _:
                 pass
 
-    def _deserializeField(self, row: Any, attribute_name: str, flag_type: Type[Flag] | None, pb_field: pb_Field):
+    def _deserialize_field(self, row: Any, attribute_name: str, flag_type: Type[Flag] | None, pb_field: pb_Field):
         match pb_field.WhichOneof("value"):
             case "numbers" if pb_field.multi:
                 setattr(row, attribute_name,
@@ -238,7 +281,7 @@ class Table(Generic[RowType]):
             case "locations":
                 locationField = LocationField(property_id=UUID(pb_field.propertyId))
                 for point in pb_field.locations.elements:
-                    locationField.addPoint(point.name, point.latitude, point.longitude, point.address)
+                    locationField.add_point(point.name, point.latitude, point.longitude, point.address)
                 setattr(row, "_" + attribute_name, locationField)
             case "members":
                 if flag_type is None:

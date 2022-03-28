@@ -24,7 +24,7 @@ from kes.proto.project_pb2 import LookupProjectRequest
 
 
 class ProjectNotFound(Exception):
-    """ Exception when a project could not be found."""
+    """ Exception indicating when a project could not be found."""
     ...
 
 

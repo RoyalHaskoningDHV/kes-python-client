@@ -20,11 +20,11 @@ class LocationField:
         self._property_id = property_id
         self._points = []
 
-    def addPoint(self, name: str, latitude: float, longitude: float, address: str):
+    def add_point(self, name: str, latitude: float, longitude: float, address: str):
         location = self.Point(name=name, latitude=latitude, longitude=longitude, address=address)
         self._points.append(location)
 
-    def getPoints(self):
+    def get_points(self):
         return self._points
 
     def __getitem__(self, key: int):

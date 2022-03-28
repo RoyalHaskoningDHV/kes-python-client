@@ -30,15 +30,15 @@ row = CategoryAssetRow(
 )
 
 # Add a location
-row.location.addPoint(address="Meppel - Assen",
-                      latitude=52.77035725849205,
-                      longitude=6.49079267010161,
-                      name="Switch")
+row.location.add_point(address="Meppel - Assen",
+                       latitude=52.77035725849205,
+                       longitude=6.49079267010161,
+                       name="Switch")
 # Add a image
 scriptPath = os.path.realpath(__file__)
-filePath = os.path.join(os.path.dirname(scriptPath), "goofy.png")
+filePath = os.path.join(os.path.dirname(scriptPath), "test_image.png")
 imageFile = open(filePath, "rb")
-table.saveImage(row.image, "Goofy", imageFile.read())
+table.save_image(row.image, "Goofy", imageFile.read())
 
 # Add the row
-table.appendRow(row)
+table.append_row(row)
