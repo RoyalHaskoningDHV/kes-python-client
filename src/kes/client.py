@@ -1,9 +1,9 @@
-""" Client module.
+"""Client module.
 
-This module is the starting point for wrting a KES Python script.
-Scripts typically start by configuring and creating a client instance, after which the client can be used to open projects.
+This module is the starting point for wrting a Kes Python script.
+Scripts typically start by configuring and creating a client, after which this client can be used to open projects.
 
-    Typical usage example:
+Usage example::
 
     config = Config(kes_service_address='localhost:50051')
     client = Client(config)
@@ -61,9 +61,8 @@ class Client:
         self._table_stub = TableStub(self._channel)
         self._project_stub = ProjectStub(self._channel)
 
-        """Open a Kes project
-
-        Opens a Kes project by name.
+    def open_project_by_master_id(self, master_id: str) -> Project:
+        """Open a Kes project by master project id.
 
         Args:
             project_name (str): Name of the project to open.
@@ -74,10 +73,8 @@ class Client:
         Raises:
             ProjectNotFound: The requested project could not be found.
         """
-
-    def open_project(self, project_name: str) -> Project:
         try:
-            request = LookupProjectRequest(projectName=project_name)
+            request = LookupProjectRequest(masterProjectId=master_id)
             reply = self._project_stub.lookupProject(request)
             projectId = UUID(reply.projectId)
             return Project(projectId, self._table_stub, self._project_stub)
@@ -86,3 +83,14 @@ class Client:
                 raise ProjectNotFound
             else:
                 raise
+
+    def open_project_by_id(self, project_id: UUID) -> Project:
+        """Open a Kes project by id
+
+        Args:
+            project_id (UUID): uuid of the project to open.
+
+        Returns:
+            An instance representing the requested Kes project.
+        """
+        return Project(project_id, self._table_stub, self._project_stub)

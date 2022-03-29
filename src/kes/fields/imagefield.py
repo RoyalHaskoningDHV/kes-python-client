@@ -27,7 +27,7 @@ class ImageField:
     _ref: ImageRef | ImageUpload | None
     __chunkSize = 60 * 1024  # 64 KiB
 
-    def __init__(self, property_id: UUID, imageRef: Optional[ImageRef] = None):
+    def __init__(self, property_id: UUID, image_ref: Optional[ImageRef] = None):
         """
         The constructor for the ImageField class.
 
@@ -35,7 +35,7 @@ class ImageField:
            property_id (UUID): Id of the image property corresponding to this field
         """
         self._property_id = property_id
-        self._ref = imageRef
+        self._ref = image_ref
 
     def load(self, stub: TableStub) -> ByteString:
         """ Loads an image and returns it as a binary stream if present """
@@ -61,7 +61,7 @@ class ImageField:
             chunk = image[i: i + self.__chunkSize]
             yield SaveImageRequest(chunk=chunk)
 
-    def isEmpty(self) -> bool:
+    def is_empty(self) -> bool:
         return self._ref is None
 
     @property

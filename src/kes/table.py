@@ -240,7 +240,7 @@ class Table(Generic[RowType]):
             return True
 
         if isinstance(field, ImageField):
-            return field.isEmpty()
+            return field.is_empty()
 
         return False
 
@@ -288,7 +288,7 @@ class Table(Generic[RowType]):
                 setattr(row, attribute_name, value)
             case "image":
                 imageRef = ImageField.ImageRef(pb_field.image.fileName, UUID(pb_field.image.id))
-                imageField = ImageField(property_id=UUID(pb_field.propertyId), imageRef=imageRef)
+                imageField = ImageField(property_id=UUID(pb_field.propertyId), image_ref=imageRef)
                 setattr(row, "_" + attribute_name, imageField)
             case "locations":
                 locationField = LocationField(property_id=UUID(pb_field.propertyId))
