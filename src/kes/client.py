@@ -7,7 +7,7 @@ Scripts typically start by configuring and creating a client instance, after whi
 
     config = Config(kes_service_address='localhost:50051')
     client = Client(config)
-    project = client.openProject("Preview Python client example")
+    project = client.open_project("Preview Python client example")
 """
 
 from dataclasses import dataclass

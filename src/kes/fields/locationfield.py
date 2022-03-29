@@ -1,3 +1,5 @@
+""" Location field module."""
+
 from dataclasses import dataclass
 from typing import Iterator, List
 from uuid import UUID
@@ -8,6 +10,7 @@ class LocationField:
 
     @dataclass
     class Point:
+        """A point contained within a location field"""
         name: str
         latitude: float
         longitude: float
