@@ -1,6 +1,11 @@
 kes package
 ===========
 
+.. automodule:: kes
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -8,10 +13,17 @@ Subpackages
    :maxdepth: 4
 
    kes.fields
-   kes.proto
 
 Submodules
 ----------
+
+kes.client module
+-----------------
+
+.. automodule:: kes.client
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 kes.project module
 ------------------
@@ -25,14 +37,6 @@ kes.table module
 ----------------
 
 .. automodule:: kes.table
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: kes
    :members:
    :undoc-members:
    :show-inheritance:

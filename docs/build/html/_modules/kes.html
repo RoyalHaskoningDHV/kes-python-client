@@ -8,33 +8,46 @@
 
     <title>kes package &#8212; kes  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
+    
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
+    
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="kes.fields package" href="kes.fields.html" />
-    <link rel="prev" title="kes" href="modules.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="kes" href="modules.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="kes.fields.html" title="kes.fields package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="kes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">kes  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">kes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">kes package</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
-  <section id="kes-package">
-<h1>kes package<a class="headerlink" href="#kes-package" title="Permalink to this headline">¶</a></h1>
+  <section id="module-kes">
+<span id="kes-package"></span><h1>kes package<a class="headerlink" href="#module-kes" title="Permalink to this headline">¶</a></h1>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -43,17 +56,6 @@
 <li class="toctree-l2"><a class="reference internal" href="kes.fields.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kes.fields.html#module-kes.fields.imagefield">kes.fields.imagefield module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kes.fields.html#module-kes.fields.locationfield">kes.fields.locationfield module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kes.fields.html#module-kes.fields.serialize">kes.fields.serialize module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kes.fields.html#module-kes.fields">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="kes.proto.html">kes.proto package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="kes.proto.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kes.proto.html#module-kes.proto.project_pb2">kes.proto.project_pb2 module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kes.proto.html#module-kes.proto.project_pb2_grpc">kes.proto.project_pb2_grpc module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kes.proto.html#module-kes.proto.table_pb2">kes.proto.table_pb2 module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kes.proto.html#module-kes.proto.table_pb2_grpc">kes.proto.table_pb2_grpc module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kes.proto.html#module-kes.proto">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -62,59 +64,181 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </section>
+<section id="module-kes.client">
+<span id="kes-client-module"></span><h2>kes.client module<a class="headerlink" href="#module-kes.client" title="Permalink to this headline">¶</a></h2>
+<p>Client module.</p>
+<p>This module is the starting point for wrting a KES Python script.
+Scripts typically start by configuring and creating a client instance, after which the client can be used to open projects.</p>
+<blockquote>
+<div><p>Typical usage example:</p>
+<p>config = Config(kes_service_address=’localhost:50051’)
+client = Client(config)
+project = client.open_project(“Preview Python client example”)</p>
+</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="kes.client.Client">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.client.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#kes.client.Config" title="kes.client.Config"><span class="pre">kes.client.Config</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.client.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Kes client.</p>
+<p>Starting point of a kes script. After creating a client instance, kes projects can be opened using open_project.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="kes.client.Client.open_project">
+<span class="sig-name descname"><span class="pre">open_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#kes.project.Project" title="kes.project.Project"><span class="pre">kes.project.Project</span></a></span></span><a class="headerlink" href="#kes.client.Client.open_project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="kes.client.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.client.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kes_service_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.client.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds configuration of the client.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="kes.client.Config.kes_service_address">
+<span class="sig-name descname"><span class="pre">kes_service_address</span></span><a class="headerlink" href="#kes.client.Config.kes_service_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Address of the service which interacts with the Kes database.
+Example: ‘<a class="reference external" href="https://kes-table-service-pr-staging.bluebush-b51cfb01.westeurope.azurecontainerapps.io:50051">https://kes-table-service-pr-staging.bluebush-b51cfb01.westeurope.azurecontainerapps.io:50051</a>’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">kes_service_address</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="kes.client.ProjectNotFound">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.client.</span></span><span class="sig-name descname"><span class="pre">ProjectNotFound</span></span><a class="headerlink" href="#kes.client.ProjectNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception indicating when a project could not be found.</p>
+</dd></dl>
+
+</section>
 <section id="module-kes.project">
 <span id="kes-project-module"></span><h2>kes.project module<a class="headerlink" href="#module-kes.project" title="Permalink to this headline">¶</a></h2>
+<p>Project module.</p>
+<p>This module contains classes for manipulating Kes projects and activities.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="kes.project.Activity">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.project.</span></span><span class="sig-name descname"><span class="pre">Activity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="kes.proto.html#kes.proto.table_pb2_grpc.TableStub" title="kes.proto.table_pb2_grpc.TableStub"><span class="pre">kes.proto.table_pb2_grpc.TableStub</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.project.Activity" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.project.</span></span><span class="sig-name descname"><span class="pre">Activity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">kes.proto.table_pb2_grpc.TableStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.project.Activity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A Kes activity.</p>
+<p>An activity is the execution of a template. This class is a factory to build
+tables for this activity.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="kes.project.Activity.build_table">
-<span class="sig-name descname"><span class="pre">build_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tableDef</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#kes.table.TableDef" title="kes.table.TableDef"><span class="pre">kes.table.TableDef</span></a><span class="p"><span class="pre">[</span></span><span class="pre">kes.table.RowType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#kes.table.Table" title="kes.table.Table"><span class="pre">kes.table.Table</span></a><span class="p"><span class="pre">[</span></span><span class="pre">kes.table.RowType</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#kes.project.Activity.build_table" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">build_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_def</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#kes.table.TableDef" title="kes.table.TableDef"><span class="pre">kes.table.TableDef</span></a><span class="p"><span class="pre">[</span></span><span class="pre">kes.table.RowType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#kes.table.Table" title="kes.table.Table"><span class="pre">kes.table.Table</span></a><span class="p"><span class="pre">[</span></span><span class="pre">kes.table.RowType</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#kes.project.Activity.build_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a table for this activity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table_def</strong> (<a class="reference internal" href="#kes.table.TableDef" title="kes.table.TableDef"><em>TableDef</em></a>) – A definition of the table to create. Table definitions are generated by the script scaffolder.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="kes.project.Activity.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#kes.project.Activity.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>description of the activity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="kes.project.Activity.id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#kes.project.Activity.id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uuid.UUID</span></em><a class="headerlink" href="#kes.project.Activity.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>id of the activity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>uuid</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="kes.project.Project">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.project.</span></span><span class="sig-name descname"><span class="pre">Project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#kes.project.SessionConfig" title="kes.project.SessionConfig"><span class="pre">kes.project.SessionConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.project.Project" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.project.</span></span><span class="sig-name descname"><span class="pre">Project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_stub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">kes.proto.table_pb2_grpc.TableStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_stub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">kes.proto.project_pb2_grpc.ProjectStub</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.project.Project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A Kes project.</p>
+<p>An project can contain multiple activities.</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="kes.project.Project.inspections">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inspections</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#kes.project.Activity" title="kes.project.Activity"><span class="pre">kes.project.Activity</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#kes.project.Project.inspections" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object py" id="kes.project.Project.activities">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">activities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#kes.project.Activity" title="kes.project.Activity"><span class="pre">kes.project.Activity</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#kes.project.Project.activities" title="Permalink to this definition">¶</a></dt>
+<dd><p>The activities of the project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List</p>
+</dd>
+</dl>
 </dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="kes.project.SessionConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.project.</span></span><span class="sig-name descname"><span class="pre">SessionConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kes_service_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.project.SessionConfig" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="kes.project.SessionConfig.kes_service_address">
-<span class="sig-name descname"><span class="pre">kes_service_address</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#kes.project.SessionConfig.kes_service_address" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-kes.table">
 <span id="kes-table-module"></span><h2>kes.table module<a class="headerlink" href="#module-kes.table" title="Permalink to this headline">¶</a></h2>
-<p>This module offers client functionality for accessing assets and properties through the abstraction provided by the table class.</p>
+<p>Table module.</p>
+<p>This module offers functionality for accessing assets and properties through the abstraction provided by the table class.</p>
 <dl class="simple">
-<dt>Classes:</dt><dd><p>Table: Rows represent assets and columns properties.</p>
+<dt>Classes:</dt><dd><p>Table: Rows represent assets and columns properties.
+RowReference: Reference which can be assigned to relationship fields.
+FieldDef: Definition of a field.
+TableDef: Definition of a table.</p>
 </dd>
 </dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="kes.table.FieldDef">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.table.</span></span><span class="sig-name descname"><span class="pre">FieldDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">property_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">enum.Flag</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.FieldDef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines a field</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="kes.table.FieldDef.property_id">
+<span class="sig-name descname"><span class="pre">property_id</span></span><a class="headerlink" href="#kes.table.FieldDef.property_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Id of the property corresponsing with the field</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>uuid.UUID</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="kes.table.FieldDef.flag_constructor">
+<span class="sig-name descname"><span class="pre">flag_constructor</span></span><a class="headerlink" href="#kes.table.FieldDef.flag_constructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the type of the flag field if applicable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="kes.table.FieldDef.flag_type">
+<span class="sig-name descname"><span class="pre">flag_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">enum.Flag</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#kes.table.FieldDef.flag_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">property_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uuid.UUID</span></em><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="kes.table.RowElement">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.table.</span></span><span class="sig-name descname"><span class="pre">RowElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">kes.table.RowType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asset_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.RowElement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">kes.table.RowType</span></code>]</p>
-<p>Associates a row with an asset</p>
+<p>Internal</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="kes.table.RowElement.asset_id">
 <span class="sig-name descname"><span class="pre">asset_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uuid.UUID</span></em><a class="headerlink" href="#kes.table.RowElement.asset_id" title="Permalink to this definition">¶</a></dt>
@@ -146,46 +270,86 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="kes.table.Table">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.table.</span></span><span class="sig-name descname"><span class="pre">Table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="kes.proto.html#kes.proto.table_pb2_grpc.TableStub" title="kes.proto.table_pb2_grpc.TableStub"><span class="pre">kes.proto.table_pb2_grpc.TableStub</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inspection_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">kes.table.RowType</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asset_type_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">uuid.UUID</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.table.</span></span><span class="sig-name descname"><span class="pre">Table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">kes.proto.table_pb2_grpc.TableStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inspection_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">kes.table.RowType</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asset_type_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#kes.table.FieldDef" title="kes.table.FieldDef"><span class="pre">kes.table.FieldDef</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">kes.table.RowType</span></code>]</p>
-<p>This class acts as a container for rows.
-Each instance maps to a asset type, with rows corresponding to assets.</p>
+<p>Tables are the primary abstraction for manipulating Kes activities.
+This class acts as a container for rows.
+A table corresponds to a asset type, with rows corresponding to assets.</p>
+<p>Operations such as adding rows and deleting rows are executed immediately.
+For example, after executing append_row, the corresponding asset is immediately
+visible in Kes.</p>
+<p>Note that modifying a row is not yet supported. To work around this, delete the
+row and reinsert it.</p>
 <dl class="simple">
 <dt>Type parameters:</dt><dd><p>RowType: The type of rows hold by this class.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="kes.table.Table.appendRow">
-<span class="sig-name descname"><span class="pre">appendRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">kes.table.RowType</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.appendRow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds the row to the end of the table. Returns a row reference.</p>
+<dt class="sig sig-object py" id="kes.table.Table.append_row">
+<span class="sig-name descname"><span class="pre">append_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">kes.table.RowType</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.append_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the row to the end of the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>RowType</em>) – the row to insert.</p>
+</dd>
+</dl>
+<p>Returns: A row reference which can be assigned to relationship fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#kes.table.TableFull" title="kes.table.TableFull"><strong>TableFull</strong></a> – Indicates table cannot hold any more rows.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="kes.table.Table.getReferenceByRowIndex">
-<span class="sig-name descname"><span class="pre">getReferenceByRowIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rowIndex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.getReferenceByRowIndex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a reference to the specified row</p>
+<dt class="sig sig-object py" id="kes.table.Table.get_reference_by_row_index">
+<span class="sig-name descname"><span class="pre">get_reference_by_row_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rowIndex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.get_reference_by_row_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a reference to the specified row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rowIndex</strong> (<em>int</em>) – Index of row to get a reference to.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="kes.table.Table.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.load" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Load the rows of this table.</p>
+<p>After instantiating a table, it is empty. Call this method to load assets from the Kes activity.</p>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="kes.table.Table.loadImage">
-<span class="sig-name descname"><span class="pre">loadImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><span class="pre">kes.fields.imagefield.ImageField</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.loadImage" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="kes.table.Table.load_image">
+<span class="sig-name descname"><span class="pre">load_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><span class="pre">kes.fields.imagefield.ImageField</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ByteString</span></span></span><a class="headerlink" href="#kes.table.Table.load_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load image data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>image</strong> (<a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><em>ImageField</em></a>) – The image whose data to read.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="kes.table.Table.saveImage">
-<span class="sig-name descname"><span class="pre">saveImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><span class="pre">kes.fields.imagefield.ImageField</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.saveImage" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="kes.table.Table.save_image">
+<span class="sig-name descname"><span class="pre">save_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><span class="pre">kes.fields.imagefield.ImageField</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.save_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save image data and associated name to an image field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><em>ImageField</em></a>) – Image field to write to.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the image as visible in Kes.</p></li>
+<li><p><strong>data</strong> (<em>bytes</em>) – Contents of the image file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="kes.table.TableDef">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.table.</span></span><span class="sig-name descname"><span class="pre">TableDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">RowType</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asset_type_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">uuid.UUID</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.TableDef" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.table.</span></span><span class="sig-name descname"><span class="pre">TableDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">RowType</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asset_type_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#kes.table.FieldDef" title="kes.table.FieldDef"><span class="pre">kes.table.FieldDef</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.TableDef" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">kes.table.RowType</span></code>]</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="kes.table.TableDef.asset_type_id">
@@ -194,7 +358,7 @@ Each instance maps to a asset type, with rows corresponding to assets.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="kes.table.TableDef.property_map">
-<span class="sig-name descname"><span class="pre">property_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">uuid.UUID</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#kes.table.TableDef.property_map" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">property_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#kes.table.FieldDef" title="kes.table.FieldDef"><span class="pre">kes.table.FieldDef</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#kes.table.TableDef.property_map" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -208,49 +372,51 @@ Each instance maps to a asset type, with rows corresponding to assets.</p>
 <dt class="sig sig-object py" id="kes.table.TableFull">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.table.</span></span><span class="sig-name descname"><span class="pre">TableFull</span></span><a class="headerlink" href="#kes.table.TableFull" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception indication when a row could not be inserted
+because the table is full.</p>
 </dd></dl>
 
 </section>
-<section id="module-kes">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-kes" title="Permalink to this headline">¶</a></h2>
-</section>
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">kes</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">kes</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">kes package</a></li>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">kes package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-kes.client">kes.client module</a></li>
+<li><a class="reference internal" href="#module-kes.project">kes.project module</a></li>
+<li><a class="reference internal" href="#module-kes.table">kes.table module</a></li>
 </ul>
 </li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="modules.html">kes</a><ul>
-      <li>Previous: <a href="modules.html" title="previous chapter">kes</a></li>
-      <li>Next: <a href="kes.fields.html" title="next chapter">kes.fields package</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="modules.html"
+                          title="previous chapter">kes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="kes.fields.html"
+                          title="next chapter">kes.fields package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_modules/kes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -261,32 +427,33 @@ Each instance maps to a asset type, with rows corresponding to assets.</p>
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2022, Royal HaskoningDHV.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../_sources/_modules/kes.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="kes.fields.html" title="kes.fields package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="kes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">kes  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >kes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">kes package</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Royal HaskoningDHV.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
   </body>
 </html>

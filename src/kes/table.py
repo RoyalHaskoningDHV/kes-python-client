@@ -29,7 +29,6 @@ RowType = TypeVar('RowType')
 
 @dataclass
 class RowElement(Generic[RowType]):
-    """ Internal """
     row: RowType
     asset_id: UUID
 
@@ -52,7 +51,9 @@ class TableFull(Exception):
 
 @dataclass
 class FieldDef:
-    """ Defines a field
+    """Defines a field.
+
+    This class is used by the script scaffolder to define fields.
 
     Attributes:
         property_id: Id of the property corresponsing with the field
@@ -67,13 +68,24 @@ PropertyMap = Mapping[str, FieldDef]
 
 @dataclass
 class TableDef(Generic[RowType]):
+    """Defines a table.
+
+    This class is used by the script scaffolder to define tables.
+
+    Attributes:
+        row_type: Row type of this table.
+        asset_type_id: UUID of the asset type associated with this table.
+        property_map: Mapping from property names to property ids.
+
+    """
     row_type: Type[RowType]
     asset_type_id: UUID
     property_map: PropertyMap
 
 
 class Table(Generic[RowType]):
-    """
+    """Table
+
     Tables are the primary abstraction for manipulating Kes activities.
     This class acts as a container for rows.
     A table corresponds to a asset type, with rows corresponding to assets.
