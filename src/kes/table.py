@@ -261,14 +261,22 @@ class Table(Generic[RowType]):
                     locPoint = LocationPoint(name=point.name, latitude=point.latitude,
                                              longitude=point.longitude, address=point.address)
                     pb_field.locations.elements.append(locPoint)
-            case [firstNumber, *rest] if isinstance(firstNumber, float):
-                pb_field.numbers.elements[:] = [firstNumber, *rest]
-            case [firstString, *rest] if type(firstString) == str:
-                pb_field.strings.elements[:] = [firstString, *rest]
             case Flag() as flag:
                 for i, c in enumerate(bin(flag.value)[:1:-1], 1):
                     if c == '1':
                         pb_field.members.elements.append(i)
+            case RowReference():
+                pb_field.rowReferences.elements.append(str(field.asset_id))
+            case firstNumber, *rest if isinstance(firstNumber, float):
+                pb_field.numbers.elements[:] = [firstNumber, *rest]
+            case firstString, *rest if type(firstString) == str:
+                pb_field.strings.elements[:] = [firstString, *rest]
+            case firstRowReference, *rest if isinstance(firstRowReference, RowReference):
+                for reference in field:
+                    if isinstance(reference, RowReference):
+                        pb_field.rowReferences.elements.append(str(reference.asset_id))
+                    else:
+                        raise TypeError
             case _:
                 pass
 
@@ -301,5 +309,13 @@ class Table(Generic[RowType]):
                 flagValue = reduce(lambda r, m: r | 2**(m - 1),
                                    pb_field.members.elements, 0)
                 setattr(row, attribute_name, flag_type(flagValue))
+            case "rowReferences" if pb_field.multi:
+                values: List[UUID] = []
+                for row_reference in pb_field.rowReferences.elements:
+                    values.append(UUID(row_reference))
+                setattr(row, attribute_name, values)
+            case "rowReferences":
+                value = next(iter(pb_field.rowReferences.elements), None)
+                setattr(row, attribute_name, UUID(value))
             case _:
                 pass

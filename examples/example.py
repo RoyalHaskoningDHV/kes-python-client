@@ -1,7 +1,6 @@
 from uuid import UUID
-from tables import CategoryAssetRow, Multipleselect, Singleselect
+from tables import CategoryParentAssetRow, CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def, category_parent_asset_table_def
 from kes.client import Client, Config
-from tables import category_asset_table_def
 import os
 
 # Fetch config
@@ -45,5 +44,13 @@ filePath = os.path.join(os.path.dirname(scriptPath), "test_image.png")
 imageFile = open(filePath, "rb")
 table.save_image(row.image, "Naam van image", imageFile.read())
 
-# Add the row
-table.append_row(row)
+# Add the row and get a reference
+ref = table.append_row(row)
+
+# Create a row in parent asset and set reference
+parent_table = activity.build_table(category_parent_asset_table_def)
+parent_table.load()
+if len(parent_table) > 0:
+    del parent_table[0]
+parent_row = CategoryParentAssetRow(relationship=ref)
+parent_table.append_row(parent_row)
