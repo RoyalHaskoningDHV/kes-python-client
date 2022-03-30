@@ -4,8 +4,11 @@ from kes.client import Client, Config
 from tables import category_asset_table_def
 import os
 
+# Fetch config
+SERVICE_ADDRESS = os.getenv('KES_SERVICE_URL', 'localhost:50051')
+
 # Initialize client
-config = Config(kes_service_address='localhost:50051')
+config = Config(kes_service_address=SERVICE_ADDRESS)
 client = Client(config)
 
 # Open project
