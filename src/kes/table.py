@@ -13,7 +13,7 @@ from functools import reduce
 import logging
 import uuid
 from dataclasses import dataclass
-from typing import Any, ByteString, Generator, List, Generic, Mapping, Type, TypeVar
+from typing import Any, ByteString, Generator, List, Generic, Mapping, Optional, Type, TypeVar
 from uuid import UUID, uuid4
 import grpc
 
@@ -198,6 +198,7 @@ class Table(Generic[RowType]):
         After instantiating a table, it is empty. Call this method to load assets from the Kes activity.
         """
 
+        self._rows = []
         reply: TableReply = self._stub.readTable(ReadTableRequest(
             inspectionId=str(self._inspection_id), assetTypeId=str(self._asset_type_id)
         ))
@@ -225,11 +226,18 @@ class Table(Generic[RowType]):
         """
         image.save(self._stub, name, data)
 
-    def load_image(self, image: ImageField) -> ByteString:
+    def load_image(self, image: ImageField) -> Optional[ByteString]:
         """Load image data.
 
+        If the image field has an image, return the image data.
+        The resulting bytestream can for example be written to a file.
+        If there is no image, return `None`.
+
         Args:
-            image (ImageField): The image whose data to read.
+            image (ImageField): The image field whose image data should be read.
+
+        Returns:
+             Optional[ByteString]: The image data, or None if there is no image
         """
         return image.load(self._stub)
 
