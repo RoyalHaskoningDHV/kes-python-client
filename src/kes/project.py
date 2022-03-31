@@ -26,7 +26,6 @@ class Activity:
     _stub: TableStub
 
     def __init__(self, stub: TableStub, id: UUID, description: str):
-        """Typically not directly invoked"""
         self._id = id
         self._stub = stub
         self._description = description
@@ -70,7 +69,6 @@ class Project:
     _project_stub: ProjectStub
 
     def __init__(self, project_id: UUID, table_stub: TableStub, project_stub: ProjectStub):
-        """Typically not directly invoked"""
         self._project_id = project_id
         self._table_stub = table_stub
         self._project_stub = project_stub

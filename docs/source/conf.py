@@ -56,6 +56,5 @@ html_static_path = ['_static']
 
 autodoc_default_options = {
     'members': True,
-    'show-inheritance': True,
-    'undoc-members': None
+    'show-inheritance': True
 }

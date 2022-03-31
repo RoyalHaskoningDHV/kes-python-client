@@ -3,7 +3,6 @@ kes package
 
 .. automodule:: kes
    :members:
-   :undoc-members:
    :show-inheritance:
 
 Subpackages
@@ -22,7 +21,6 @@ kes.client module
 
 .. automodule:: kes.client
    :members:
-   :undoc-members:
    :show-inheritance:
 
 kes.project module
@@ -30,7 +28,6 @@ kes.project module
 
 .. automodule:: kes.project
    :members:
-   :undoc-members:
    :show-inheritance:
 
 kes.table module
@@ -38,5 +35,4 @@ kes.table module
 
 .. automodule:: kes.table
    :members:
-   :undoc-members:
    :show-inheritance:

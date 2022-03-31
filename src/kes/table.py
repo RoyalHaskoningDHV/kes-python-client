@@ -110,8 +110,6 @@ class Table(Generic[RowType]):
     _rev_property_map: Mapping[UUID, tuple[str, Type[Flag] | None]]
 
     def __init__(self, stub: TableStub, inspection_id: UUID, row_type: Type[RowType], asset_type_id: UUID, property_map: PropertyMap):
-        """Typically not directly invoked."""
-
         self._stub = stub
         self._inspection_id = inspection_id
         self._row_type = row_type
