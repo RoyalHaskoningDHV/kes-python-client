@@ -241,6 +241,18 @@ class Table(Generic[RowType]):
         """
         return image.load(self._stub)
 
+    def clear(self):
+        """Delete all the rows of the table."""
+        asset_ids: List[str] = []
+        for row_element in self._rows:
+            asset_id = str(row_element.asset_id)
+            asset_ids.append(asset_id)
+
+        request = DeleteRowsRequest(assetIds=asset_ids)
+        self._stub.deleteRows(request)
+
+        self._rows.clear()
+
     def _field_is_empty(self, field: Any) -> bool:
         if self is None:
             return True

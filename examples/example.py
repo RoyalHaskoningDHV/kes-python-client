@@ -26,7 +26,7 @@ table.load()
 
 # Deleting row if it exists
 if len(table) > 0:
-    del table[0]
+    table.clear()
 
 # Create a row
 row = CategoryAssetRow(
