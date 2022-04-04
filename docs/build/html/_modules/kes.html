@@ -293,6 +293,12 @@ row and reinsert it.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="kes.table.Table.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete all the rows of the table.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="kes.table.Table.get_reference_by_row_index">
 <span class="sig-name descname"><span class="pre">get_reference_by_row_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rowIndex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.table.Table.get_reference_by_row_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a reference to the specified row.</p>
@@ -312,11 +318,20 @@ row and reinsert it.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="kes.table.Table.load_image">
-<span class="sig-name descname"><span class="pre">load_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><span class="pre">kes.fields.imagefield.ImageField</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ByteString</span></span></span><a class="headerlink" href="#kes.table.Table.load_image" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><span class="pre">kes.fields.imagefield.ImageField</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ByteString</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#kes.table.Table.load_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load image data.</p>
+<p>If the image field has an image, return the image data.
+The resulting bytestream can for example be written to a file.
+If there is no image, return <cite>None</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>image</strong> (<a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><em>ImageField</em></a>) – The image whose data to read.</p>
+<dd class="field-odd"><p><strong>image</strong> (<a class="reference internal" href="kes.fields.html#kes.fields.imagefield.ImageField" title="kes.fields.imagefield.ImageField"><em>ImageField</em></a>) – The image field whose image data should be read.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The image data, or None if there is no image</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Optional[ByteString]</p>
 </dd>
 </dl>
 </dd></dl>
