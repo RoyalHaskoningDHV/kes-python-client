@@ -25,15 +25,14 @@ class Multipleselect(Flag):
 class CategoryAssetRow:
     singleselect: Optional[Singleselect] = None
     _image: ImageField = field(default_factory=lambda: ImageField(
-        UUID("51673021-9e75-4348-849c-e1280bb35fd5")), init=False)
+        UUID("10f11f64-cdce-4ca7-9266-8afeb3a87f6c")), init=False)
 
     @property
     def image(self):
         return self._image
 
-    multipleselect: Optional[Multipleselect] = None
     _location: LocationField = field(default_factory=lambda: LocationField(
-        UUID("fc30d0f6-23c8-468b-a48e-b12796ee5bec")), init=False)
+        UUID("39a81418-d542-46d5-959b-924a51c4885b")), init=False)
 
     @property
     def location(self):
@@ -41,18 +40,19 @@ class CategoryAssetRow:
 
     text: Optional[str] = None
     amount: Optional[float] = None
+    multipleselect: Optional[Multipleselect] = None
 
 
 category_asset_table_def = TableDef[CategoryAssetRow](
     row_type=CategoryAssetRow,
-    asset_type_id=UUID("d7707940-8c91-4231-bf44-fb07497575cc"),
+    asset_type_id=UUID("c1b19055-71bb-4355-ab79-426841ca58f3"),
     property_map={
-        "singleselect": FieldDef(UUID("7b03cddb-4216-4de4-bc21-93d38014edea"), Singleselect),
-        "image": FieldDef(UUID("51673021-9e75-4348-849c-e1280bb35fd5"), None),
-        "multipleselect": FieldDef(UUID("9782b775-07b8-4da0-b18b-7558f62e4a11"), Multipleselect),
-        "location": FieldDef(UUID("fc30d0f6-23c8-468b-a48e-b12796ee5bec"), None),
-        "text": FieldDef(UUID("5278e509-d35b-4bc2-9825-ee5b58cf6cac"), None),
-        "amount": FieldDef(UUID("823021a2-9741-4429-a5bc-fdb31f520d42"), None)
+        "singleselect": FieldDef(UUID("d0165c6c-3a53-4126-b701-44cab335853a"), Singleselect),
+        "image": FieldDef(UUID("10f11f64-cdce-4ca7-9266-8afeb3a87f6c"), None),
+        "location": FieldDef(UUID("39a81418-d542-46d5-959b-924a51c4885b"), None),
+        "text": FieldDef(UUID("da1df664-e1ae-4b00-aef5-8e5d86ec74da"), None),
+        "amount": FieldDef(UUID("f03d4f5f-a76c-4f20-ab89-5e452b437627"), None),
+        "multipleselect": FieldDef(UUID("7cfdbda8-02e3-47b5-9dae-aa8246baf5d3"), Multipleselect)
     }
 )
 
@@ -64,8 +64,8 @@ class CategoryParentAssetRow:
 
 category_parent_asset_table_def = TableDef[CategoryParentAssetRow](
     row_type=CategoryParentAssetRow,
-    asset_type_id=UUID("94c5522f-5ecb-4eee-a5b8-637b0b946b50"),
+    asset_type_id=UUID("bd3ada3c-dc9c-4366-935a-963936faf391"),
     property_map={
-        "relationship": FieldDef(UUID("b4aa7376-a029-41f4-9253-e822d783676f"), None)
+        "relationship": FieldDef(UUID("3a977520-4d23-4de2-a0a9-71f5f795fd47"), None)
     }
 )

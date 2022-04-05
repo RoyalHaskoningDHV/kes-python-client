@@ -1,7 +1,10 @@
+from io import BytesIO
 from uuid import UUID
 from tables import CategoryParentAssetRow, CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def, category_parent_asset_table_def
 from kes.client import Client, Config
 import os
+from PIL import Image
+from PIL.ImageShow import show
 
 # Fetch config
 SERVICE_ADDRESS = os.getenv('KES_SERVICE_URL', 'localhost:50051')
@@ -11,7 +14,7 @@ config = Config(kes_service_address=SERVICE_ADDRESS)
 client = Client(config)
 
 # Open project
-project = client.open_project_by_id(UUID("01adaf22-2b48-4148-8062-c91a50721e5e"))   # by id
+project = client.open_project_by_id(UUID("870f7d2b-e9e6-4667-aaf4-690996e8ec00"))   # by id
 project = client.open_project_by_master_id("master666")  # by master project id
 
 # Create a table
@@ -23,7 +26,7 @@ table.load()
 
 # Deleting row if it exists
 if len(table) > 0:
-    del table[0]
+    table.clear()
 
 # Create a row
 row = CategoryAssetRow(
@@ -42,10 +45,18 @@ row.location.add_point(address="Meppel - Assen",
 scriptPath = os.path.realpath(__file__)
 filePath = os.path.join(os.path.dirname(scriptPath), "test_image.png")
 imageFile = open(filePath, "rb")
-table.save_image(row.image, "Naam van image", imageFile.read())
+table.save_image(row.image, "Image name", imageFile.read())
 
 # Add the row and get a reference
 ref = table.append_row(row)
+
+# Retrieve and show the image
+table.load()
+image_data = table.load_image(table[0].image)
+if image_data is None:
+    raise RuntimeError("No image found.")
+image = Image.open(BytesIO(bytes(image_data)))
+show(image, "Test image")
 
 # Create a row in parent asset and set reference
 parent_table = activity.build_table(category_parent_asset_table_def)

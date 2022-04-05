@@ -6,10 +6,6 @@ from kes.proto.table_pb2_grpc import TableStub
 from kes.proto.table_pb2 import LoadImageRequest, SaveImageReply, SaveImageRequest
 
 
-class ImageUndefined(Exception):
-    ...
-
-
 class ImageField:
     """ This class allows saving and reading images in fields """
 
@@ -37,10 +33,9 @@ class ImageField:
         self._property_id = property_id
         self._ref = image_ref
 
-    def load(self, stub: TableStub) -> ByteString:
-        """ Loads an image and returns it as a binary stream if present """
+    def load(self, stub: TableStub) -> Optional[ByteString]:
         if not isinstance(self._ref, self.ImageRef):
-            raise ImageUndefined
+            return None
 
         imageData = bytearray()
         streamingReply = stub.loadImage(LoadImageRequest(
