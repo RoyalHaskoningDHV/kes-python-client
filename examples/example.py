@@ -8,9 +8,12 @@ from PIL.ImageShow import show
 
 # Fetch config
 SERVICE_ADDRESS = os.getenv('KES_SERVICE_URL', 'localhost:50051')
+ROOT_CERTIFICATE_PATH = os.getenv('ROOT_CERTIFICATE_PATH', 'ssl.crt')
+ACCESS_TOKEN = os.getenv('ACCESS_TOKEN', 'token')
 
 # Initialize client
-config = Config(kes_service_address=SERVICE_ADDRESS)
+config = Config(kes_service_address=SERVICE_ADDRESS,
+                root_certificates_path=ROOT_CERTIFICATE_PATH, access_token=ACCESS_TOKEN)
 client = Client(config)
 
 # Open project
