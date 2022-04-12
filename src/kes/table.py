@@ -269,7 +269,7 @@ class Table(Generic[RowType]):
             case str(textValue):
                 pb_field.strings.elements.append(textValue)
             case ImageField() as imageValue:
-                if imageValue.key != None:
+                if imageValue.key != "":
                     pb_field.image.fileName = imageValue.name
                     pb_field.image.tempKey = imageValue.key
                 else:

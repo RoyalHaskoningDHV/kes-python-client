@@ -116,14 +116,15 @@ Scripts typically start by configuring and creating a client, after which this c
 
 <dl class="py class">
 <dt class="sig sig-object py" id="kes.client.Config">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.client.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kes_service_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_certificates_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.client.Config" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kes.client.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kes_service_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kes-table-service-production.bluebush-b51cfb01.westeurope.azurecontainerapps.io:443'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_certificates_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kes.client.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Holds configuration of the client.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="kes.client.Config.kes_service_address">
 <span class="sig-name descname"><span class="pre">kes_service_address</span></span><a class="headerlink" href="#kes.client.Config.kes_service_address" title="Permalink to this definition">¶</a></dt>
 <dd><p>Address of the service which interacts with the Kes database.
-Example: ‘<a class="reference external" href="https://kes-table-service-pr-staging.bluebush-b51cfb01.westeurope.azurecontainerapps.io:50051">https://kes-table-service-pr-staging.bluebush-b51cfb01.westeurope.azurecontainerapps.io:50051</a>’</p>
+Defaults to the production instance.
+Example: <code class="code docutils literal notranslate"><span class="pre">kes-table-service-production.bluebush-b51cfb01.westeurope.azurecontainerapps.io:443</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -145,10 +146,11 @@ Example: ‘<a class="reference external" href="https://kes-table-service-pr-sta
 <dl class="py attribute">
 <dt class="sig sig-object py" id="kes.client.Config.root_certificates_path">
 <span class="sig-name descname"><span class="pre">root_certificates_path</span></span><a class="headerlink" href="#kes.client.Config.root_certificates_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path to the file containing the root certificates.</p>
+<dd><p>Path to the file containing the root certificates.
+Defaults to <code class="code docutils literal notranslate"><span class="pre">None</span></code>. Can be left blank unless connecting to a custom KES instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>Optional[str]</p>
 </dd>
 </dl>
 </dd></dl>
