@@ -7,10 +7,10 @@ from PIL import Image
 from PIL.ImageShow import show
 
 # Fetch config
-SERVICE_ADDRESS = os.getenv('KES_SERVICE_URL', 'localhost:50051')
+ACCESS_TOKEN = os.getenv('ACCESS_TOKEN', 'token')
 
 # Initialize client
-config = Config(kes_service_address=SERVICE_ADDRESS)
+config = Config(access_token=ACCESS_TOKEN)
 client = Client(config)
 
 # Open project

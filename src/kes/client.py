@@ -11,6 +11,7 @@ Usage example::
 """
 
 from dataclasses import dataclass
+from typing import Optional
 from uuid import UUID
 
 import grpc
@@ -35,10 +36,17 @@ class Config:
     Attributes:
         kes_service_address:
             Address of the service which interacts with the Kes database.
-            Example: 'https://kes-table-service-pr-staging.bluebush-b51cfb01.westeurope.azurecontainerapps.io:50051'
-
+            Defaults to the production instance.
+            Example: :code:`kes-table-service-production.bluebush-b51cfb01.westeurope.azurecontainerapps.io:443`
+        access_token:
+            Access token. Can be obtained from the Kes project manager.
+        root_certificates_path:
+            Path to the file containing the root certificates.
+            Defaults to :code:`None`. Can be left blank unless connecting to a custom KES instance.
     """
-    kes_service_address: str
+    access_token: str
+    kes_service_address: str = "kes-table-service-production.bluebush-b51cfb01.westeurope.azurecontainerapps.io:443"
+    root_certificates_path: Optional[str] = None
 
 
 class Client:
@@ -57,7 +65,14 @@ class Client:
         Args:
             config (Config): The client configuration
         """
-        self._channel = grpc.insecure_channel(config.kes_service_address)
+        root_certificates = None
+        if config.root_certificates_path != None:
+            with open(config.root_certificates_path, 'rb') as f:
+                root_certificates = f.read()
+        channel_credentials = grpc.ssl_channel_credentials(root_certificates)
+        call_credentials = grpc.access_token_call_credentials(config.access_token)
+        combined_credentials = grpc.composite_channel_credentials(channel_credentials, call_credentials)
+        self._channel = grpc.secure_channel(config.kes_service_address, combined_credentials)
         self._table_stub = TableStub(self._channel)
         self._project_stub = ProjectStub(self._channel)
 
