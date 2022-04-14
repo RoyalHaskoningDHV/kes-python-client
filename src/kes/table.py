@@ -102,16 +102,16 @@ class Table(Generic[RowType]):
     """
 
     _stub: TableStub
-    _inspection_id: UUID
+    _activity_id: UUID
     _row_type: Type[RowType]
     _asset_type_id: UUID
     _rows: List[RowElement[RowType]]
     _property_map: PropertyMap
     _rev_property_map: Mapping[UUID, tuple[str, Type[Flag] | None]]
 
-    def __init__(self, stub: TableStub, inspection_id: UUID, row_type: Type[RowType], asset_type_id: UUID, property_map: PropertyMap):
+    def __init__(self, stub: TableStub, activity_id: UUID, row_type: Type[RowType], asset_type_id: UUID, property_map: PropertyMap):
         self._stub = stub
-        self._inspection_id = inspection_id
+        self._activity_id = activity_id
         self._row_type = row_type
         self._asset_type_id = asset_type_id
         self._rows = []
@@ -159,7 +159,7 @@ class Table(Generic[RowType]):
             raise TypeError
 
         request = AddRowsRequest()
-        request.inspectionId = str(self._inspection_id)
+        request.inspectionId = str(self._activity_id)
         request.assetTypeId = str(self._asset_type_id)
         row = request.rows.add()
         asset_id = uuid4()
@@ -200,7 +200,7 @@ class Table(Generic[RowType]):
 
         self._rows = []
         reply: TableReply = self._stub.readTable(ReadTableRequest(
-            inspectionId=str(self._inspection_id), assetTypeId=str(self._asset_type_id)
+            inspectionId=str(self._activity_id), assetTypeId=str(self._asset_type_id)
         ))
         for row in reply.rows:
             localRow: RowType = self._row_type()
