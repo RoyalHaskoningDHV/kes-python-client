@@ -143,7 +143,7 @@ class Table(Generic[RowType]):
     def __reversed__(self) -> Generator[RowType, None, None]:
         return (rowElem.row for rowElem in reversed(self._rows))
 
-    def append_row(self, value: RowType):
+    def append_row(self, value: RowType) -> RowReference[RowType]:
         """Adds the row to the end of the table.
 
         Args:
