@@ -6,11 +6,11 @@ This repository contains a python client which can be used to programatically ac
 
 Generally speaking you would first create your data model in Kes and, publish it, download the Python representation of it and use that in your own Python code by creating a client like this:
 
-'''
+```
 config = Config(kes_service_address='localhost:50051')
 client = Client(config)
 project = client.open_project("Preview Python client example")
-'''
+```
 
 ## Requirements
 
