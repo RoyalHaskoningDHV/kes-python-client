@@ -72,3 +72,12 @@ class ImageField:
             return self._ref.key
         else:
             return ""
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, type(self)):
+            return False
+
+        if not isinstance(other._ref, type(self._ref)):
+            return False
+
+        return self._property_id == other._property_id and self._ref == other._ref

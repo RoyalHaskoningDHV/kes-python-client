@@ -13,6 +13,7 @@ from functools import reduce
 import logging
 import uuid
 from dataclasses import dataclass
+from collections.abc import Sequence
 from typing import Any, ByteString, Generator, List, Generic, Mapping, Optional, Type, TypeVar
 from uuid import UUID, uuid4
 import grpc
@@ -83,7 +84,7 @@ class TableDef(Generic[RowType]):
     property_map: PropertyMap
 
 
-class Table(Generic[RowType]):
+class Table(Generic[RowType], Sequence[RowType]):
     """Table
 
     Tables are the primary abstraction for manipulating Kes activities.
