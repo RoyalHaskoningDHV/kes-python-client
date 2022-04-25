@@ -6,7 +6,7 @@ from kes.proto.table_pb2_grpc import TableStub
 
 from kes.proto.table_pb2 import AddRowsRequest, ReadTableRequest, TableReply
 
-from tables import CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def
+from .tables import CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def
 from kes.table import Table
 
 

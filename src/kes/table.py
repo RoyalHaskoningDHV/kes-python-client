@@ -133,7 +133,7 @@ class Table(Generic[RowType], Sequence[RowType]):
     def __delitem__(self, key: int):
         asset_id = self._rows[key].asset_id
 
-        request = DeleteRowsRequest(assetIds=[str(asset_id)])
+        request = DeleteRowsRequest(assetIds=[str(asset_id)], inspectionId=str(self._activity_id))
         self._stub.deleteRows(request)
 
         del self._rows[key]
@@ -249,7 +249,7 @@ class Table(Generic[RowType], Sequence[RowType]):
             asset_id = str(row_element.asset_id)
             asset_ids.append(asset_id)
 
-        request = DeleteRowsRequest(assetIds=asset_ids)
+        request = DeleteRowsRequest(assetIds=asset_ids, inspectionId=str(self._activity_id))
         self._stub.deleteRows(request)
 
         self._rows.clear()
