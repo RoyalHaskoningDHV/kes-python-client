@@ -45,5 +45,10 @@ class LocationField:
     def __reversed__(self) -> Iterator[Point]:
         return reversed(self._points)
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, type(self)):
+            return False
+        return self._property_id == other._property_id and self._points == other._points
+
     def append(self, value: Point):
         self._points.append(value)

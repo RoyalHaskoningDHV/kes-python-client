@@ -13,6 +13,7 @@ from functools import reduce
 import logging
 import uuid
 from dataclasses import dataclass
+from collections.abc import Sequence
 from typing import Any, ByteString, Generator, List, Generic, Mapping, Optional, Type, TypeVar
 from uuid import UUID, uuid4
 import grpc
@@ -83,7 +84,7 @@ class TableDef(Generic[RowType]):
     property_map: PropertyMap
 
 
-class Table(Generic[RowType]):
+class Table(Generic[RowType], Sequence[RowType]):
     """Table
 
     Tables are the primary abstraction for manipulating Kes activities.
@@ -102,16 +103,16 @@ class Table(Generic[RowType]):
     """
 
     _stub: TableStub
-    _inspection_id: UUID
+    _activity_id: UUID
     _row_type: Type[RowType]
     _asset_type_id: UUID
     _rows: List[RowElement[RowType]]
     _property_map: PropertyMap
     _rev_property_map: Mapping[UUID, tuple[str, Type[Flag] | None]]
 
-    def __init__(self, stub: TableStub, inspection_id: UUID, row_type: Type[RowType], asset_type_id: UUID, property_map: PropertyMap):
+    def __init__(self, stub: TableStub, activity_id: UUID, row_type: Type[RowType], asset_type_id: UUID, property_map: PropertyMap):
         self._stub = stub
-        self._inspection_id = inspection_id
+        self._activity_id = activity_id
         self._row_type = row_type
         self._asset_type_id = asset_type_id
         self._rows = []
@@ -132,7 +133,7 @@ class Table(Generic[RowType]):
     def __delitem__(self, key: int):
         asset_id = self._rows[key].asset_id
 
-        request = DeleteRowsRequest(assetIds=[str(asset_id)])
+        request = DeleteRowsRequest(assetIds=[str(asset_id)], inspectionId=str(self._activity_id))
         self._stub.deleteRows(request)
 
         del self._rows[key]
@@ -143,7 +144,7 @@ class Table(Generic[RowType]):
     def __reversed__(self) -> Generator[RowType, None, None]:
         return (rowElem.row for rowElem in reversed(self._rows))
 
-    def append_row(self, value: RowType):
+    def append_row(self, value: RowType) -> RowReference[RowType]:
         """Adds the row to the end of the table.
 
         Args:
@@ -159,7 +160,7 @@ class Table(Generic[RowType]):
             raise TypeError
 
         request = AddRowsRequest()
-        request.inspectionId = str(self._inspection_id)
+        request.inspectionId = str(self._activity_id)
         request.assetTypeId = str(self._asset_type_id)
         row = request.rows.add()
         asset_id = uuid4()
@@ -200,7 +201,7 @@ class Table(Generic[RowType]):
 
         self._rows = []
         reply: TableReply = self._stub.readTable(ReadTableRequest(
-            inspectionId=str(self._inspection_id), assetTypeId=str(self._asset_type_id)
+            inspectionId=str(self._activity_id), assetTypeId=str(self._asset_type_id)
         ))
         for row in reply.rows:
             localRow: RowType = self._row_type()
@@ -248,7 +249,7 @@ class Table(Generic[RowType]):
             asset_id = str(row_element.asset_id)
             asset_ids.append(asset_id)
 
-        request = DeleteRowsRequest(assetIds=asset_ids)
+        request = DeleteRowsRequest(assetIds=asset_ids, inspectionId=str(self._activity_id))
         self._stub.deleteRows(request)
 
         self._rows.clear()
