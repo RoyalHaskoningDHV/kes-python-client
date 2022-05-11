@@ -20,7 +20,7 @@ import grpc
 
 from kes.fields.imagefield import ImageField
 
-from kes.proto.table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, TableReply, LocationPoint, Field as pb_Field
+from kes.proto.table_pb2 import AddRowsRequest, DeleteRowsRequest, ReadTableRequest, Rows, LocationPoint, Field as pb_Field
 from kes.proto.table_pb2_grpc import TableStub
 
 from kes.fields.locationfield import LocationField
@@ -133,7 +133,7 @@ class Table(Generic[RowType], Sequence[RowType]):
     def __delitem__(self, key: int):
         asset_id = self._rows[key].asset_id
 
-        request = DeleteRowsRequest(assetIds=[str(asset_id)], inspectionId=str(self._activity_id))
+        request = DeleteRowsRequest(rowIds=[str(asset_id)], activityId=str(self._activity_id))
         self._stub.deleteRows(request)
 
         del self._rows[key]
@@ -160,8 +160,8 @@ class Table(Generic[RowType], Sequence[RowType]):
             raise TypeError
 
         request = AddRowsRequest()
-        request.inspectionId = str(self._activity_id)
-        request.assetTypeId = str(self._asset_type_id)
+        request.activityId = str(self._activity_id)
+        request.tableId = str(self._asset_type_id)
         row = request.rows.add()
         asset_id = uuid4()
         row.assetId = str(asset_id)
@@ -200,8 +200,8 @@ class Table(Generic[RowType], Sequence[RowType]):
         """
 
         self._rows = []
-        reply: TableReply = self._stub.readTable(ReadTableRequest(
-            inspectionId=str(self._activity_id), assetTypeId=str(self._asset_type_id)
+        reply: Rows = self._stub.readTable(ReadTableRequest(
+            activityId=str(self._activity_id), tableId=str(self._asset_type_id)
         ))
         for row in reply.rows:
             localRow: RowType = self._row_type()
@@ -249,7 +249,7 @@ class Table(Generic[RowType], Sequence[RowType]):
             asset_id = str(row_element.asset_id)
             asset_ids.append(asset_id)
 
-        request = DeleteRowsRequest(assetIds=asset_ids, inspectionId=str(self._activity_id))
+        request = DeleteRowsRequest(rowIds=asset_ids, activityId=str(self._activity_id))
         self._stub.deleteRows(request)
 
         self._rows.clear()

@@ -2,9 +2,7 @@ import unittest
 from unittest.mock import Mock, patch
 from uuid import uuid4
 
-from kes.proto.table_pb2_grpc import TableStub
-
-from kes.proto.table_pb2 import AddRowsRequest, ReadTableRequest, TableReply
+from kes.proto.table_pb2 import AddRowsRequest, ReadTableRequest, Rows
 
 from .tables import CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def
 from kes.table import Table
@@ -45,8 +43,8 @@ class TestTable(unittest.TestCase):
         req = AddRowsRequest()
         row = req.rows.add()
         row.assetId = str(self.rowId)
-        req.inspectionId = str(self.activityUuid)
-        req.assetTypeId = str(self.tableUuid)
+        req.activityId = str(self.activityUuid)
+        req.tableId = str(self.tableUuid)
         field_number = row.fields.add()
         field_number.propertyId = 'f03d4f5f-a76c-4f20-ab89-5e452b437627'
         field_number.numbers.elements.append(3.0)
@@ -65,7 +63,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(ref.asset_type_id, self.tableUuid)
 
     def test_load_row(self):
-        response = TableReply()
+        response = Rows()
         row = response.rows.add()
         row.assetId = str(self.rowId)
         field_number = row.fields.add()
@@ -90,8 +88,8 @@ class TestTable(unittest.TestCase):
         self.table.load()
 
         req = ReadTableRequest()
-        req.inspectionId = str(self.activityUuid)
-        req.assetTypeId = str(self.tableUuid)
+        req.activityId = str(self.activityUuid)
+        req.tableId = str(self.tableUuid)
         mockLoad.assert_called_once_with(req)
 
         self.assertSequenceEqual(self.table, [self.row])
