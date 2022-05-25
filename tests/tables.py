@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass, field
 from enum import Flag, auto
-from typing import Container, Optional
+from typing import Optional
 from uuid import UUID
 from kes.table import TableDef, RowReference, FieldDef
 from kes.fields.imagefield import ImageField
