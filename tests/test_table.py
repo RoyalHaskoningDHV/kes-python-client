@@ -62,6 +62,21 @@ class TestTable(unittest.TestCase):
 
         self.assertEqual(ref.asset_type_id, self.tableUuid)
 
+    def test_append_empty_row(self):
+        patch('uuid.uuid4', Mock(return_value=self.rowId))
+        emptyRow = CategoryAssetRow()
+        ref = self.table.append_row(emptyRow)
+
+        req = AddRowsRequest()
+        row = req.rows.add()
+        row.assetId = str(self.rowId)
+        req.activityId = str(self.activityUuid)
+        req.tableId = str(self.tableUuid)
+
+        self.tableStub.addRows.called_once_with(req)
+
+        self.assertEqual(ref.asset_type_id, self.tableUuid)
+
     def test_load_row(self):
         response = Rows()
         row = response.rows.add()

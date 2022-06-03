@@ -167,12 +167,11 @@ class Table(Generic[RowType], Sequence[RowType]):
         row.assetId = str(asset_id)
 
         for fieldName, fieldDef in self._property_map.items():
-            pb_field = row.fields.add()
-            pb_field.propertyId = str(fieldDef.property_id)
             field = getattr(value, fieldName)
-            if self._field_is_empty(field):
-                continue
-            self._serialize_field(field, pb_field)
+            if not self._field_is_empty(field):
+                pb_field = row.fields.add()
+                pb_field.propertyId = str(fieldDef.property_id)
+                self._serialize_field(field, pb_field)
         try:
             self._stub.addRows(request)
         except grpc.RpcError as e:
@@ -255,7 +254,7 @@ class Table(Generic[RowType], Sequence[RowType]):
         self._rows.clear()
 
     def _field_is_empty(self, field: Any) -> bool:
-        if self is None:
+        if field is None:
             return True
 
         if isinstance(field, ImageField):

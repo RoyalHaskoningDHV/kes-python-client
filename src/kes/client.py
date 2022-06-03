@@ -45,7 +45,7 @@ class Config:
             Defaults to :code:`None`. Can be left blank unless connecting to a custom KES instance.
     """
     access_token: str
-    kes_service_address: str = "kes-table-service-production.bluebush-b51cfb01.westeurope.azurecontainerapps.io:443"
+    kes_service_address: str = "kes-table-service-production--ff11by1.delightfuldesert-b9ce0345.westeurope.azurecontainerapps.io:443"
     root_certificates_path: Optional[str] = None
 
 
