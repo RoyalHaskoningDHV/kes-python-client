@@ -1,3 +1,8 @@
+## 1.dev5 25-05-2022
+
+- Fix: put generated examle table file tables.py back
+- Change: update default kes table service url
+
 ## 1.dev4 11-05-2022
 
 (No user visible changes)
