@@ -11,12 +11,12 @@ Classes:
 from enum import Flag
 from functools import reduce
 import logging
-import uuid
 from dataclasses import dataclass
 from collections.abc import Sequence
 from typing import Any, ByteString, Generator, List, Generic, Mapping, Optional, Type, TypeVar
 from uuid import UUID, uuid4
 import grpc
+from kes.fields.field import Field
 
 from kes.fields.imagefield import ImageField
 
@@ -214,7 +214,7 @@ class Table(Generic[RowType], Sequence[RowType]):
                 self._deserialize_field(localRow, *revFieldDef, field)
 
             self._rows.append(RowElement[RowType](
-                localRow, uuid.UUID(row.assetId)))
+                localRow, UUID(row.assetId)))
 
     def save_image(self, image: ImageField, name: str, data: bytes):
         """Save image data and associated name to an image field.
@@ -257,7 +257,7 @@ class Table(Generic[RowType], Sequence[RowType]):
         if field is None:
             return True
 
-        if isinstance(field, ImageField):
+        if isinstance(field, Field):
             return field.is_empty()
 
         return False

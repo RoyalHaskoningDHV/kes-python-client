@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 from typing import ByteString, Optional
 from uuid import UUID
+from kes.fields.field import Field
 
 from kes.proto.table_pb2_grpc import TableStub
 from kes.proto.table_pb2 import LoadImageRequest, SaveImageReply, SaveImageRequest
 
 
-class ImageField:
+class ImageField(Field):
     """ This class allows saving and reading images in fields """
 
     @dataclass

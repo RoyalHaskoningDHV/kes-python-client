@@ -75,7 +75,21 @@ class TestTable(unittest.TestCase):
 
         self.tableStub.addRows.assert_called_once_with(req)    # type: ignore
 
-        self.assertEqual(ref.asset_type_id, self.tableUuid)
+    def test_append_integer(self):
+        patch('kes.table.uuid4', Mock(return_value=self.rowId))
+        rowWithInteger = CategoryAssetRow(amount=3)
+        self.table.append_row(rowWithInteger)
+
+        req = AddRowsRequest()
+        row = req.rows.add()
+        row.assetId = str(self.rowId)
+        req.activityId = str(self.activityUuid)
+        req.tableId = str(self.tableUuid)
+        field_number = row.fields.add()
+        field_number.propertyId = 'f03d4f5f-a76c-4f20-ab89-5e452b437627'
+        field_number.numbers.elements.append(4.0)
+
+        self.tableStub.addRows.assert_called_once_with(req)    # type: ignore
 
     def test_load_row(self):
         response = Rows()
