@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from kes.proto.table_pb2 import AddRowsRequest, ReadTableRequest, Rows
 
-from .tables import CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def
+from tables import CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def
 from kes.table import Table
 
 
@@ -19,6 +19,7 @@ class TestRow(unittest.TestCase):
         self.assertIsNot(row1.image, row2.image)
 
 
+@patch('kes.table.uuid4')
 class TestTable(unittest.TestCase):
     def setUp(self):
         self.tableStub = Mock()
@@ -35,9 +36,8 @@ class TestTable(unittest.TestCase):
             text="Text"
         )
 
-    def test_append_row(self):
-
-        patch('uuid.uuid4', Mock(return_value=self.rowId))
+    def test_append_row(self, mock_uuid: Mock):
+        mock_uuid.return_value = self.rowId
         ref = self.table.append_row(self.row)
 
         req = AddRowsRequest()
@@ -45,27 +45,27 @@ class TestTable(unittest.TestCase):
         row.assetId = str(self.rowId)
         req.activityId = str(self.activityUuid)
         req.tableId = str(self.tableUuid)
-        field_number = row.fields.add()
-        field_number.propertyId = 'f03d4f5f-a76c-4f20-ab89-5e452b437627'
-        field_number.numbers.elements.append(3.0)
-        field_text = row.fields.add()
-        field_text.propertyId = 'da1df664-e1ae-4b00-aef5-8e5d86ec74da'
-        field_text.strings.elements.append("Text")
         field_singleselect = row.fields.add()
         field_singleselect.propertyId = 'd0165c6c-3a53-4126-b701-44cab335853a'
         field_singleselect.members.elements.append(3)
+        field_text = row.fields.add()
+        field_text.propertyId = 'da1df664-e1ae-4b00-aef5-8e5d86ec74da'
+        field_text.strings.elements.append("Text")
+        field_number = row.fields.add()
+        field_number.propertyId = 'f03d4f5f-a76c-4f20-ab89-5e452b437627'
+        field_number.numbers.elements.append(3.0)
         field_multiselect = row.fields.add()
         field_multiselect.propertyId = '7cfdbda8-02e3-47b5-9dae-aa8246baf5d3'
         field_multiselect.members.elements.append(1)
         field_multiselect.members.elements.append(3)
-        self.tableStub.addRows.called_once_with(req)
+        self.tableStub.addRows.assert_called_once_with(req)    # type: ignore
 
         self.assertEqual(ref.asset_type_id, self.tableUuid)
 
-    def test_append_empty_row(self):
-        patch('uuid.uuid4', Mock(return_value=self.rowId))
+    def test_append_empty_row(self, mock_uuid: Mock):
+        mock_uuid.return_value = self.rowId
         emptyRow = CategoryAssetRow()
-        ref = self.table.append_row(emptyRow)
+        self.table.append_row(emptyRow)
 
         req = AddRowsRequest()
         row = req.rows.add()
@@ -73,7 +73,7 @@ class TestTable(unittest.TestCase):
         req.activityId = str(self.activityUuid)
         req.tableId = str(self.tableUuid)
 
-        self.tableStub.addRows.called_once_with(req)
+        self.tableStub.addRows.assert_called_once_with(req)    # type: ignore
 
         self.assertEqual(ref.asset_type_id, self.tableUuid)
 
