@@ -269,11 +269,8 @@ class Table(Generic[RowType], Sequence[RowType]):
             case str(textValue):
                 pb_field.strings.elements.append(textValue)
             case ImageField() as imageValue:
-                if imageValue.key != "":
-                    pb_field.image.fileName = imageValue.name
-                    pb_field.image.tempKey = imageValue.key
-                else:
-                    del pb_field
+                pb_field.image.fileName = imageValue.name
+                pb_field.image.tempKey = imageValue.key
             case LocationField() as locationValue:
                 for point in locationValue:
                     locPoint = LocationPoint(name=point.name, latitude=point.latitude,

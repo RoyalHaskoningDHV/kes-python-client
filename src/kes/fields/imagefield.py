@@ -58,7 +58,7 @@ class ImageField(Field):
             yield SaveImageRequest(chunk=chunk)
 
     def is_empty(self) -> bool:
-        return self._ref is None
+        return not isinstance(self._ref, self.ImageUpload)
 
     @property
     def name(self):
