@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import Mock, patch
 from uuid import uuid4
 
-from kes.proto.table_pb2 import AddRowsRequest, ImageValue, ReadTableRequest, Row, Rows, SaveImageReply, SaveImageRequest
+from kes.proto.table_pb2 import AddRowsRequest, ImageValue, LocationPoint, LocationValues, ReadTableRequest, Row, Rows, SaveImageReply, SaveImageRequest
 
 from tables import CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def
 from kes.table import Table
@@ -76,6 +76,22 @@ class TestTable(unittest.TestCase):
 
         self.tableStub.addRows.assert_called_once_with(req)  # type: ignore
         self.tableStub.saveImage.assert_called_once()  # type: ignore
+
+    def test_append_location(self, mock_uuid: Mock):
+        mock_uuid.return_value = self.rowId
+
+        location_row = CategoryAssetRow()
+        location_row.location.add_point("point", 3.3, 6.6, "address")
+        self.table.append_row(location_row)
+
+        req, row = self._build_rows_request()
+        field_location = row.fields.add()
+        field_location.propertyId = "39a81418-d542-46d5-959b-924a51c4885b"
+
+        point = LocationPoint(name = "point", latitude=3.3, longitude=6.6, address="address")
+        field_location.locations.elements.append(point)
+
+        self.tableStub.addRows.assert_called_once_with(req)  # type: ignore
 
     def _build_rows_request(self) -> Tuple[AddRowsRequest, Row]:
         req = AddRowsRequest()
