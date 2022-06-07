@@ -264,8 +264,8 @@ class Table(Generic[RowType], Sequence[RowType]):
 
     def _serialize_field(self, field: Any, pb_field: pb_Field):
         match field:
-            case float(floatValue):
-                pb_field.numbers.elements.append(floatValue)
+            case float(numberValue) | int(numberValue):
+                pb_field.numbers.elements.append(numberValue)
             case str(textValue):
                 pb_field.strings.elements.append(textValue)
             case ImageField() as imageValue:
@@ -285,7 +285,7 @@ class Table(Generic[RowType], Sequence[RowType]):
                         pb_field.members.elements.append(i)
             case RowReference():
                 pb_field.rowReferences.elements.append(str(field.asset_id))
-            case firstNumber, *rest if isinstance(firstNumber, float):
+            case firstNumber, *rest if isinstance(firstNumber, float | int):
                 pb_field.numbers.elements[:] = [firstNumber, *rest]
             case firstString, *rest if type(firstString) == str:
                 pb_field.strings.elements[:] = [firstString, *rest]
