@@ -3,9 +3,10 @@
 from dataclasses import dataclass
 from typing import Iterator, List
 from uuid import UUID
+from kes.fields.field import Field
 
 
-class LocationField:
+class LocationField(Field):
     """ This class allows saving and reading location in fields """
 
     @dataclass
@@ -52,3 +53,6 @@ class LocationField:
 
     def append(self, value: Point):
         self._points.append(value)
+
+    def is_empty(self) -> bool:
+        return len(self._points) == 0

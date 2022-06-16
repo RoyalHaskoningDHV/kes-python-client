@@ -1,10 +1,11 @@
+from typing import Tuple
 import unittest
 from unittest.mock import Mock, patch
 from uuid import uuid4
 
-from kes.proto.table_pb2 import AddRowsRequest, ReadTableRequest, Rows
+from kes.proto.table_pb2 import AddRowsRequest, ImageValue, LocationPoint, LocationValues, ReadTableRequest, Row, Rows, SaveImageReply, SaveImageRequest
 
-from .tables import CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def
+from tables import CategoryAssetRow, Multipleselect, Singleselect, category_asset_table_def
 from kes.table import Table
 
 
@@ -19,6 +20,7 @@ class TestRow(unittest.TestCase):
         self.assertIsNot(row1.image, row2.image)
 
 
+@patch('kes.table.uuid4')
 class TestTable(unittest.TestCase):
     def setUp(self):
         self.tableStub = Mock()
@@ -35,34 +37,92 @@ class TestTable(unittest.TestCase):
             text="Text"
         )
 
-    def test_append_row(self):
-
-        patch('uuid.uuid4', Mock(return_value=self.rowId))
+    def test_append_row_primitive_fields(self, mock_uuid: Mock):
+        mock_uuid.return_value = self.rowId
         ref = self.table.append_row(self.row)
 
+        req, row = self._build_rows_request()
+        field_singleselect = row.fields.add()
+        field_singleselect.propertyId = 'd0165c6c-3a53-4126-b701-44cab335853a'
+        field_singleselect.members.elements.append(3)
+        field_text = row.fields.add()
+        field_text.propertyId = 'da1df664-e1ae-4b00-aef5-8e5d86ec74da'
+        field_text.strings.elements.append("Text")
+        field_number = row.fields.add()
+        field_number.propertyId = 'f03d4f5f-a76c-4f20-ab89-5e452b437627'
+        field_number.numbers.elements.append(3.0)
+        field_multiselect = row.fields.add()
+        field_multiselect.propertyId = '7cfdbda8-02e3-47b5-9dae-aa8246baf5d3'
+        field_multiselect.members.elements.append(1)
+        field_multiselect.members.elements.append(3)
+        self.tableStub.addRows.assert_called_once_with(req)    # type: ignore
+
+        self.assertEqual(ref.asset_type_id, self.tableUuid)
+
+    def test_append_row_image(self, mock_uuid: Mock):
+        mock_uuid.return_value = self.rowId
+        self.tableStub.saveImage.return_value = SaveImageReply(tempKey="tempKey")  # type: ignore
+
+        image_row = CategoryAssetRow()
+        fake_image = "FAKE_IMAGE"
+        self.table.save_image(image_row.image, "image_name", fake_image.encode())
+        self.table.append_row(image_row)
+
+        req, row = self._build_rows_request()
+        field_image = row.fields.add()
+        field_image.propertyId = "10f11f64-cdce-4ca7-9266-8afeb3a87f6c"
+        field_image.image.fileName = "image_name"
+        field_image.image.tempKey = "tempKey"
+
+        self.tableStub.addRows.assert_called_once_with(req)  # type: ignore
+        self.tableStub.saveImage.assert_called_once()  # type: ignore
+
+    def test_append_location(self, mock_uuid: Mock):
+        mock_uuid.return_value = self.rowId
+
+        location_row = CategoryAssetRow()
+        location_row.location.add_point("point", 3.3, 6.6, "address")
+        self.table.append_row(location_row)
+
+        req, row = self._build_rows_request()
+        field_location = row.fields.add()
+        field_location.propertyId = "39a81418-d542-46d5-959b-924a51c4885b"
+
+        point = LocationPoint(name = "point", latitude=3.3, longitude=6.6, address="address")
+        field_location.locations.elements.append(point)
+
+        self.tableStub.addRows.assert_called_once_with(req)  # type: ignore
+
+    def _build_rows_request(self) -> Tuple[AddRowsRequest, Row]:
         req = AddRowsRequest()
         row = req.rows.add()
         row.assetId = str(self.rowId)
         req.activityId = str(self.activityUuid)
         req.tableId = str(self.tableUuid)
+        return req, row  # type: ignore
+
+    def test_append_empty_row(self, mock_uuid: Mock):
+        mock_uuid.return_value = self.rowId
+        emptyRow = CategoryAssetRow()
+        self.table.append_row(emptyRow)
+
+        req, _ = self._build_rows_request()
+
+        self.tableStub.addRows.assert_called_once_with(req)    # type: ignore
+
+    def test_append_integer(self, mock_uuid: Mock):
+        mock_uuid.return_value = self.rowId
+        rowWithInteger = CategoryAssetRow(amount=3)
+        self.table.append_row(rowWithInteger)
+
+        req, row = self._build_rows_request()
         field_number = row.fields.add()
         field_number.propertyId = 'f03d4f5f-a76c-4f20-ab89-5e452b437627'
         field_number.numbers.elements.append(3.0)
-        field_text = row.fields.add()
-        field_text.propertyId = 'da1df664-e1ae-4b00-aef5-8e5d86ec74da'
-        field_text.strings.elements.append("Text")
-        field_singleselect = row.fields.add()
-        field_singleselect.propertyId = 'd0165c6c-3a53-4126-b701-44cab335853a'
-        field_singleselect.members.elements.append(3)
-        field_multiselect = row.fields.add()
-        field_multiselect.propertyId = '7cfdbda8-02e3-47b5-9dae-aa8246baf5d3'
-        field_multiselect.members.elements.append(1)
-        field_multiselect.members.elements.append(3)
-        self.tableStub.addRows.called_once_with(req)
 
-        self.assertEqual(ref.asset_type_id, self.tableUuid)
+        self.tableStub.addRows.assert_called_once_with(req)    # type: ignore
 
-    def test_load_row(self):
+    def test_load_row(self, _):
         response = Rows()
         row = response.rows.add()
         row.assetId = str(self.rowId)
@@ -94,7 +154,7 @@ class TestTable(unittest.TestCase):
 
         self.assertSequenceEqual(self.table, [self.row])
 
-    def test_iteration(self):
+    def test_iteration(self, _):
         row1 = CategoryAssetRow(text="Roel de Jong")
         row2 = CategoryAssetRow(text="John Carmack")
         self.table.append_row(row1)
@@ -108,7 +168,7 @@ class TestTable(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(programmer_iter)
 
-    def test_reverse_iteration(self):
+    def test_reverse_iteration(self, _):
         row1 = CategoryAssetRow(text="Roel de Jong")
         row2 = CategoryAssetRow(text="John Carmack")
         self.table.append_row(row1)
@@ -122,7 +182,7 @@ class TestTable(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(programmer_iter)
 
-    def test_len(self):
+    def test_len(self, _):
         self.assertEqual(len(self.table), 0)
 
         programmer = CategoryAssetRow()

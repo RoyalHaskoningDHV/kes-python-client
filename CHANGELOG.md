@@ -1,4 +1,10 @@
-## 1.dev5 25-05-2022
+## 1.dev7 08-06-2022
+
+- Fix: Allow empty fields when adding rows.
+- Enchancement: Support serializing integers (`int`) as number fields.
+- Chore: Upgrade dependency `protobuf-4.21.1`
+
+## 1.dev6 25-05-2022
 
 - Fix: put generated examle table file tables.py back
 - Change: update default kes table service url

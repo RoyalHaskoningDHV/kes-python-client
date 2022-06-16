@@ -11,12 +11,12 @@ Classes:
 from enum import Flag
 from functools import reduce
 import logging
-import uuid
 from dataclasses import dataclass
 from collections.abc import Sequence
 from typing import Any, ByteString, Generator, List, Generic, Mapping, Optional, Type, TypeVar
 from uuid import UUID, uuid4
 import grpc
+from kes.fields.field import Field
 
 from kes.fields.imagefield import ImageField
 
@@ -167,12 +167,11 @@ class Table(Generic[RowType], Sequence[RowType]):
         row.assetId = str(asset_id)
 
         for fieldName, fieldDef in self._property_map.items():
-            pb_field = row.fields.add()
-            pb_field.propertyId = str(fieldDef.property_id)
             field = getattr(value, fieldName)
-            if self._field_is_empty(field):
-                continue
-            self._serialize_field(field, pb_field)
+            if not self._field_is_empty(field):
+                pb_field = row.fields.add()
+                pb_field.propertyId = str(fieldDef.property_id)
+                self._serialize_field(field, pb_field)
         try:
             self._stub.addRows(request)
         except grpc.RpcError as e:
@@ -215,7 +214,7 @@ class Table(Generic[RowType], Sequence[RowType]):
                 self._deserialize_field(localRow, *revFieldDef, field)
 
             self._rows.append(RowElement[RowType](
-                localRow, uuid.UUID(row.assetId)))
+                localRow, UUID(row.assetId)))
 
     def save_image(self, image: ImageField, name: str, data: bytes):
         """Save image data and associated name to an image field.
@@ -255,26 +254,23 @@ class Table(Generic[RowType], Sequence[RowType]):
         self._rows.clear()
 
     def _field_is_empty(self, field: Any) -> bool:
-        if self is None:
+        if field is None:
             return True
 
-        if isinstance(field, ImageField):
+        if isinstance(field, Field):
             return field.is_empty()
 
         return False
 
     def _serialize_field(self, field: Any, pb_field: pb_Field):
         match field:
-            case float(floatValue):
-                pb_field.numbers.elements.append(floatValue)
+            case float(numberValue) | int(numberValue):
+                pb_field.numbers.elements.append(numberValue)
             case str(textValue):
                 pb_field.strings.elements.append(textValue)
             case ImageField() as imageValue:
-                if imageValue.key != "":
-                    pb_field.image.fileName = imageValue.name
-                    pb_field.image.tempKey = imageValue.key
-                else:
-                    del pb_field
+                pb_field.image.fileName = imageValue.name
+                pb_field.image.tempKey = imageValue.key
             case LocationField() as locationValue:
                 for point in locationValue:
                     locPoint = LocationPoint(name=point.name, latitude=point.latitude,
@@ -286,7 +282,7 @@ class Table(Generic[RowType], Sequence[RowType]):
                         pb_field.members.elements.append(i)
             case RowReference():
                 pb_field.rowReferences.elements.append(str(field.asset_id))
-            case firstNumber, *rest if isinstance(firstNumber, float):
+            case firstNumber, *rest if isinstance(firstNumber, float | int):
                 pb_field.numbers.elements[:] = [firstNumber, *rest]
             case firstString, *rest if type(firstString) == str:
                 pb_field.strings.elements[:] = [firstString, *rest]
