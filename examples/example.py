@@ -15,8 +15,8 @@ client = Client(config)
 
 # Open project
 project = client.open_project_by_id(UUID("870f7d2b-e9e6-4667-aaf4-690996e8ec00"))   # by id
-project = client.open_project_by_master_id("master666")  # by master project id
-
+projects = client.load_project_by_master_id("master666")  # by master project id
+project = projects[0]
 # Create a table
 activity = project.activities[0]
 table = activity.build_table(category_asset_table_def)
