@@ -11,17 +11,15 @@ Usage example::
 """
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, List
 from uuid import UUID
 
 import grpc
 
-from kes.proto.table_pb2_grpc import TableStub
-
-from kes.proto.project_pb2_grpc import ProjectStub
-
 from kes.project import Project
 from kes.proto.project_pb2 import LookupProjectRequest
+from kes.proto.project_pb2_grpc import ProjectDetailStub
+from kes.proto.table_pb2_grpc import TableStub
 
 
 class ProjectNotFound(Exception):
@@ -57,7 +55,7 @@ class Client:
 
     _channel: grpc.Channel
     _table_stub: TableStub
-    _project_stub: ProjectStub
+    _project_stub: ProjectDetailStub
 
     def __init__(self, config: Config):
         """Constructs a client.
@@ -74,16 +72,16 @@ class Client:
         combined_credentials = grpc.composite_channel_credentials(channel_credentials, call_credentials)
         self._channel = grpc.secure_channel(config.kes_service_address, combined_credentials)
         self._table_stub = TableStub(self._channel)
-        self._project_stub = ProjectStub(self._channel)
+        self._project_stub = ProjectDetailStub(self._channel)
 
-    def open_project_by_master_id(self, master_id: str) -> Project:
-        """Open a Kes project by master project id.
+    def load_project_by_master_id(self, master_id: str) -> List[Project]:
+        """Load Kes project's by master project id.
 
         Args:
-            project_name (str): Name of the project to open.
+            master_id (str): Master Project Id of the projects to load.
 
         Returns:
-            An instance representing the requested Kes project.
+            One or multiple Kes projects.
 
         Raises:
             ProjectNotFound: The requested project could not be found.
@@ -91,8 +89,12 @@ class Client:
         try:
             request = LookupProjectRequest(masterProjectId=master_id)
             reply = self._project_stub.lookupProject(request)
-            projectId = UUID(reply.projectId)
-            return Project(projectId, self._table_stub, self._project_stub)
+            projects: List[Project] = []
+            for pb_project in reply.projects:
+                project = Project(UUID(pb_project.id), pb_project.name, pb_project.projectNumber,
+                                  pb_project.masterProjectId, self._table_stub, self._project_stub)
+                projects.append(project)
+            return reply.projects
         except grpc.RpcError as e:
             if e.code() == grpc.StatusCode.NOT_FOUND:
                 raise ProjectNotFound
@@ -108,4 +110,4 @@ class Client:
         Returns:
             An instance representing the requested Kes project.
         """
-        return Project(project_id, self._table_stub, self._project_stub)
+        return Project(project_id, "", "", "", self._table_stub, self._project_stub)

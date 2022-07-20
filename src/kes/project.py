@@ -8,10 +8,10 @@ from functools import cached_property
 from typing import List
 from uuid import UUID
 
-from kes.table import RowType, Table, TableDef
 from kes.proto.project_pb2 import ReadActivitiesReply, ReadActivitiesRequest
-from kes.proto.project_pb2_grpc import ProjectStub
+from kes.proto.project_pb2_grpc import ProjectDetailStub
 from kes.proto.table_pb2_grpc import TableStub
+from kes.table import RowType, Table, TableDef
 
 
 class Activity:
@@ -65,11 +65,18 @@ class Project:
     An project can contain multiple activities.
     """
     _project_id: UUID
+    _project_name: str
+    _project_number: str
+    _master_project_id: str
     _table_stub: TableStub
-    _project_stub: ProjectStub
+    _project_stub: ProjectDetailStub
 
-    def __init__(self, project_id: UUID, table_stub: TableStub, project_stub: ProjectStub):
+    def __init__(self, project_id: UUID, project_name: str, project_number: str, master_project_id: str,
+                 table_stub: TableStub, project_stub: ProjectDetailStub):
         self._project_id = project_id
+        self._project_name = project_name
+        self._project_number = project_number
+        self._master_project_id = master_project_id
         self._table_stub = table_stub
         self._project_stub = project_stub
         self._inspections = None
