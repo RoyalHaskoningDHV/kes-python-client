@@ -94,7 +94,7 @@ class Client:
                 project = Project(UUID(pb_project.id), pb_project.name, pb_project.projectNumber,
                                   pb_project.masterProjectId, self._table_stub, self._project_stub)
                 projects.append(project)
-            return reply.projects
+            return projects
         except grpc.RpcError as e:
             if e.code() == grpc.StatusCode.NOT_FOUND:
                 raise ProjectNotFound
