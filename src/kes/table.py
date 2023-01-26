@@ -8,6 +8,7 @@ Classes:
     FieldDef: Definition of a field.
     TableDef: Definition of a table.
 """
+from datetime import date, datetime
 from enum import Flag
 from functools import reduce
 import logging
@@ -276,6 +277,8 @@ class Table(Generic[RowType], Sequence[RowType]):
                     locPoint = LocationPoint(name=point.name, latitude=point.latitude,
                                              longitude=point.longitude, address=point.address)
                     pb_field.locations.elements.append(locPoint)
+            case date() as dateValue:
+                pb_field.date.FromDatetime(datetime.combine(dateValue, datetime.min.time()))
             case Flag() as flag:
                 for i, c in enumerate(bin(flag.value)[:1:-1], 1):
                     if c == '1':
@@ -318,6 +321,8 @@ class Table(Generic[RowType], Sequence[RowType]):
                 for point in pb_field.locations.elements:
                     locationField.add_point(point.name, point.latitude, point.longitude, point.address)
                 setattr(row, "_" + attribute_name, locationField)
+            case "date":
+                setattr(row, attribute_name, pb_field.date.ToDatetime())
             case "members":
                 if flag_type is None:
                     raise LookupError("Flag type not set")

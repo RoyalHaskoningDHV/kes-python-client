@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from typing import Tuple
 import unittest
 from unittest.mock import Mock, patch
@@ -34,7 +35,8 @@ class TestTable(unittest.TestCase):
             singleselect=Singleselect.A,
             multipleselect=Multipleselect.F | Multipleselect.D,
             amount=3.0,
-            text="Text"
+            text="Text",
+            dateproperty=datetime.combine(date.today(), datetime.min.time())
         )
 
     def test_append_row_primitive_fields(self, mock_uuid: Mock):
@@ -55,6 +57,9 @@ class TestTable(unittest.TestCase):
         field_multiselect.propertyId = '7cfdbda8-02e3-47b5-9dae-aa8246baf5d3'
         field_multiselect.members.elements.append(1)
         field_multiselect.members.elements.append(3)
+        field_date = row.fields.add()
+        field_date.propertyId = '828f345c-0e02-49ff-8766-41cabc38dcee'
+        field_date.date.FromDatetime(datetime.combine(date.today(), datetime.min.time()))
         self.tableStub.addRows.assert_called_once_with(req)    # type: ignore
 
         self.assertEqual(ref.asset_type_id, self.tableUuid)
@@ -143,6 +148,10 @@ class TestTable(unittest.TestCase):
         field_multi_select.multi = False
         field_multi_select.members.elements.append(1)
         field_multi_select.members.elements.append(3)
+        field_date = row.fields.add()
+        field_date.propertyId = '828f345c-0e02-49ff-8766-41cabc38dcee'
+        field_date.multi = False
+        field_date.date.FromDatetime(datetime.combine(date.today(), datetime.min.time()))
         mockLoad = Mock(return_value=response)
         self.tableStub.attach_mock(mockLoad, 'readTable')
         self.table.load()

@@ -1,6 +1,7 @@
 # THIS IS A GENERATED FILE. DO NOT EDIT.
 
 from dataclasses import dataclass, field
+from datetime import date
 from enum import Flag, auto
 from typing import Optional
 from uuid import UUID
@@ -41,6 +42,7 @@ class CategoryAssetRow:
     text: Optional[str] = None
     amount: Optional[float] = None
     multipleselect: Optional[Multipleselect] = None
+    dateproperty: Optional[date] = None
 
 
 category_asset_table_def = TableDef[CategoryAssetRow](
@@ -52,7 +54,8 @@ category_asset_table_def = TableDef[CategoryAssetRow](
         "location": FieldDef(UUID("39a81418-d542-46d5-959b-924a51c4885b"), None),
         "text": FieldDef(UUID("da1df664-e1ae-4b00-aef5-8e5d86ec74da"), None),
         "amount": FieldDef(UUID("f03d4f5f-a76c-4f20-ab89-5e452b437627"), None),
-        "multipleselect": FieldDef(UUID("7cfdbda8-02e3-47b5-9dae-aa8246baf5d3"), Multipleselect)
+        "multipleselect": FieldDef(UUID("7cfdbda8-02e3-47b5-9dae-aa8246baf5d3"), Multipleselect),
+        "dateproperty": FieldDef(UUID("828f345c-0e02-49ff-8766-41cabc38dcee"), None)
     }
 )
 
