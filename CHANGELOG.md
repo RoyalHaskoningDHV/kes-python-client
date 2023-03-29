@@ -1,3 +1,7 @@
+## 1.dev9 31-03-2023
+
+- Enhancement: Support run without providing a config through KES system. 
+
 ## 1.dev7 08-06-2022
 
 - Fix: Allow empty fields when adding rows.
