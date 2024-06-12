@@ -5,10 +5,10 @@ This module contains classes for manipulating Kes projects and activities.
 
 
 from functools import cached_property
-from typing import List
+from typing import List, Optional, ByteString
 from uuid import UUID
 
-from kes.proto.project_pb2 import ReadActivitiesReply, ReadActivitiesRequest
+from kes.proto.project_pb2 import ReadActivitiesReply, ReadActivitiesRequest, DownloadReportRequest
 from kes.proto.project_pb2_grpc import ProjectDetailStub
 from kes.proto.table_pb2_grpc import TableStub
 from kes.table import RowType, Table, TableDef
@@ -24,11 +24,13 @@ class Activity:
     _id: UUID
     _description: str
     _stub: TableStub
+    _project_stub: ProjectDetailStub
 
-    def __init__(self, stub: TableStub, id: UUID, description: str):
+    def __init__(self, stub: TableStub, id: UUID, description: str, project_stub: ProjectDetailStub):
         self._id = id
         self._stub = stub
         self._description = description
+        self._project_stub = project_stub
 
     def build_table(self, table_def: TableDef[RowType]) -> Table[RowType]:
         """ Create a table for this activity.
@@ -47,6 +49,21 @@ class Activity:
             table_def.asset_type_id,
             table_def.property_map
         )
+
+    def download_report(self) -> Optional[ByteString]:
+        """ Download Report for the activity.
+
+        Returns:
+            Activity Report.
+        """
+        reportData = bytearray()
+        request = DownloadReportRequest(activityId=str(self._id))
+        streamingReply = self._project_stub.downloadReport(request)
+
+        for reply in streamingReply:
+            reportData += reply.chunk
+
+        return reportData
 
     @property
     def id(self) -> UUID:

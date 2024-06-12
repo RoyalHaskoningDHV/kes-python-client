@@ -129,4 +129,4 @@ class Client:
         Returns:
             An instance representing the requested Kes Activity.
         """
-        return Activity(self._table_stub, activity_id, "")
+        return Activity(self._table_stub, activity_id, "", self._project_stub)
