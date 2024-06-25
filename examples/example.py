@@ -65,3 +65,7 @@ if len(parent_table) > 0:
     del parent_table[0]
 parent_row = CategoryParentAssetRow(relationship=ref)
 parent_table.append_row(parent_row)
+
+#download report and save it to a file
+with open("report.docx", "wb") as binary_file:
+    binary_file.write(activity.download_report())
